@@ -1,0 +1,94 @@
+<div id="userlist-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+        <!--<md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent">Users</span>-->
+      </div>
+      <div class="title">User List</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+    <div layout="row" class="md-title">
+      <div flex style="font-size:14px;">
+        <md-input-container flex style="min-width: 200px;margin-right: 30px">
+          <md-select ng-model="selectedUserType" ng-change="reBuild()">
+            <md-option value="0">All Users({{allUserCount}})</md-option>
+            <md-option value=1>Standard Users({{normalUserCount}})</md-option>
+            <md-option value=2>Approved Providers({{approvedProviderCount}})</md-option>
+            <md-option value=4>Agents({{agentsCount}})</md-option>
+            <md-option value=5>Pending Applicants({{pendingUserCount}})</md-option>
+            <md-option value=6>Rejected Applications({{rejectedUserCount}})</md-option>
+            <md-option value=3>Deleted & Disabled({{deletedAndDisabledUserCount}})</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container flex style="margin-bottom:0;padding-left:0" ng-hide="selectedUserType==3">
+          <md-checkbox ng-model="filter.deleted" ng-change="reBuild()">
+            Include Deleted
+          </md-checkbox>
+          <md-checkbox ng-model="filter.disabled" ng-change="reBuild()">
+            Include Disabled
+          </md-checkbox>
+        </md-input-container>
+        <md-button class="md-raised md-primary" ng-click="createUser($event)" style="float:right"> Add User </md-button>
+      </div>
+    </div>
+    <div class="white-bg md-whiteframe-4dp">
+      <div class="searchText" flex layout="row" layout-align="start center">
+        <div style="position: absolute;right: 20px;width: 300px;padding: 2px;border: 1px solid lightgrey;">
+          <md-icon md-font-icon="icon-magnify" class="icon s24"></md-icon>
+          <input flex ng-model="searchUserText" type="text" placeholder="Search for user" style="line-height:30px;" ng-enter="reBuild()">
+        </div>
+      </div>
+      <md-table-container>
+        <table md-table md-progress="promise" class="hover">
+          <thead md-head>
+          <tr md-row>
+            <th md-column style="text-align: center;">Avatar</th>
+            <th md-column>Full Name</th>
+            <th md-column>Username</th>
+            <th md-column>Email</th>
+            <th md-column>Phone Number</th>
+            <th md-column style="text-align:center;">Is Provider</th>
+            <th md-column>Tokens</th>
+            <th md-column>Member Since</th>
+          </tr>
+          </thead>
+          <tbody md-body>
+          <div ng-if="users.length>0">
+            <tr class="table-row" md-row md-auto-select ng-repeat="user in users" ng-click="editUser(user, $event)">
+              <td md-cell><div class="thumb-cover"><img class="thumb" ng-src="{{CommonUtil.getAvatarThumbnail(user.avatar)}}"></div></td>
+              <td md-cell>
+                {{ user.firstName + " " + user.lastName }}
+                <div ng-show="user.deleted||(typeof(user.enabled)!='undefined'&&user.enabled==false)">
+                  <div class="mark-deleted" ng-show="user.deleted">Deleted</div>
+                  <div class="mark-disabled" ng-show="typeof(user.enabled)!='undefined'&&user.enabled==false">Disabled</div>
+                </div>
+              </td>
+              <td md-cell>{{ user.username }}</td>
+              <td md-cell>{{ user.email }}</td>
+              <td md-cell>{{ user.phoneNumber }}</td>
+              <td md-cell style="text-align:center;">{{ (user.provider == undefined || !user.provider)?'No':((user.status==2||user.status=='rejected')?'Rejected':((user.status=='approved'||user.status==3)?'Yes':'Pending')) }}</td>
+              <td md-cell>{{ user.token }}</td>
+              <td md-cell>{{ CommonUtil.formatDate(user._bmd.createdAt) }}</td>
+            </tr>
+          </div>
+          <tr class="table-row" md-row md-auto-select ng-if="users.length == 0">
+            <td md-cell colspan="8">There is no user</td>
+          </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+      <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{totalUserCount}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+    </div>
+
+  </div>
+  <!-- / CONTENT -->
+
+</div>

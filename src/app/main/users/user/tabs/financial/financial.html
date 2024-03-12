@@ -1,0 +1,152 @@
+<div layout="row">
+  <div flex>
+    <div class="md-title mb-10" layout="row" layout-align="end center">
+      <md-button class="md-raised md-primary" ng-click="saveUserFinancial($event)" ng-disabled="userFinancialForm.$invalid || userFinancialForm.$pristine"> Save </md-button>
+    </div>
+  </div>
+</div>
+<div class="simple-table-container md-whiteframe-4dp">
+  <md-content class="md-padding">
+    <form name="userFinancialForm" class="md-inline-form" novalidate>
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container flex style="margin-top: 0; margin-bottom: 0">
+          <div>Legal Name & Tax ID</div>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex>
+          <label>Tax Name</label>
+          <input type="text" name="taxName" ng-model="userFinancial.taxName">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Tax ID</label>
+          <input type="text" name="taxID" ng-model="userFinancial.taxID">
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container flex style="margin-bottom: 0;">
+          <div class="mb-10">Payment Method</div>
+          <md-radio-group ng-model="userFinancial.paymentMethod">
+            <md-radio-button value="{{item.value}}" ng-repeat="item in CommonUtil.paymentMethods">{{item.label}}</md-radio-button>
+          </md-radio-group>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container flex style="margin-bottom: 0">
+          <div>Bank Account Info</div>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex>
+          <label>Account holder</label>
+          <input type="text" name="accountHolderName" ng-model="userFinancial.accountHolderName">
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex>
+          <label>Address1</label>
+          <input type="text" name="address1" ng-model="userFinancial.address1">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Address2</label>
+          <input type="text" name="address2" ng-model="userFinancial.address2">
+        </md-input-container>
+      </div>
+
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex="20">
+          <label>City</label>
+          <input type="text" name="city" ng-model="userFinancial.city">
+        </md-input-container>
+
+        <md-input-container flex="20">
+          <label>State</label>
+          <input type="text" name="state" ng-model="userFinancial.state">
+        </md-input-container>
+        <md-input-container flex="15">
+          <label>Postal Code</label>
+          <input name="postalcode" ng-model="userFinancial.postalCode" >
+        </md-input-container>
+        <md-input-container flex="45">
+          <label>Country</label>
+          <md-select ng-model="userFinancial.country">
+            <md-option ng-repeat="country in CommonUtil.AllCountries" value="{{country.code}}">
+              {{country.name}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex>
+          <label>Bank Name</label>
+          <input type="text" name="bankName" ng-model="userFinancial.bankName">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Routing number or SWIFT code</label>
+          <input type="text" name="routingNumber" ng-model="userFinancial.routingNumber">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Account number or IBAN</label>
+          <input type="text" name="accountNumber" ng-model="userFinancial.accountNumber" >
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row" ng-show="userFinancial.paymentMethod=='paypal'">
+        <md-input-container flex style="margin-bottom: 0">
+          <label>PayPal Email</label>
+          <input type="email" name="paypalEmail" ng-model="userFinancial.paypalEmail" >
+          <div ng-messages="userFinancialForm.paypalEmail.$error" role="alert">
+            <div ng-message="email"><span>PayPal Email field must be valid.</span></div>
+          </div>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row" ng-show="userFinancial.paymentMethod=='international-wire'">
+        <md-input-container flex>
+          <label>Intermediary Bank Name</label>
+          <input type="text" name="intermediaryBankName" ng-model="userFinancial.intermediaryBankName">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Intermediary Bank SWIFT Code</label>
+          <input type="text" name="intermediaryBankSWIFTCode" ng-model="userFinancial.intermediaryBankSWIFTCode">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Intermediary Bank Account Number</label>
+          <input type="text" name="intermediaryBankAccountNumber" ng-model="userFinancial.intermediaryBankAccountNumber" >
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row" ng-show="userFinancial.country=='US'">
+        <md-input-container flex style="margin-bottom: 0">
+          <label>Social Security #</label>
+          <input type="text" name="socialSecurityNumber" ng-model="userFinancial.socialSecurityNumber" >
+        </md-input-container>
+      </div>
+      <div layout="column" style="margin-bottom:20px" ng-show="userFinancial.country=='US'">
+        <md-input-container style="width:100%" class="upload-file-container">
+          <div>Taxpayer Form</div>
+        </md-input-container>
+        <div flex>
+          <div ng-model="attachments" flex ng-show="userFinancial.taxpayerForm">
+            <a href="{{userFinancial.taxpayerForm._file._downloadURL}}" target="_blank">{{userFinancial.taxpayerForm._file._filename}}</a>
+            <md-button ng-click="removeTaxpayerForm()" class="md-accent md-raised">Delete</md-button>
+          </div>
+        </div>
+        <div flex>
+          <div ng-class="'divClass dropableArea'" class="drop-container" style="height: 120px; line-height: 1.5;" drag-and-drop
+               drop-handler="onFileUpload(files,'taxpayerForm')" flex ng-hide="userFinancial.taxpayerForm">
+            <div class="drop-informer" style="position: relative; top: 50%; margin-top: -19px;">
+              Drop file here to upload
+            </div>
+            <div ng-show="isUploading['taxpayerForm']" style="position:absolute;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);margin-left:-30px">
+              <md-progress-circular class="md-accent md-hue-1 file-loading-circle" md-mode="indeterminate" md-diameter="70" style="margin-left:45%;margin-top:25px;"></md-progress-circular>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div ng-show="savingUserFinancial" style="position:absolute;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);margin-left:-16px;">
+      <md-progress-circular class="md-accent md-hue-1 file-loading-circle" md-mode="indeterminate" md-diameter="100" style="margin-left:45%;margin-top:300px;"></md-progress-circular>
+    </div>
+  </md-content>
+</div>
+<div ng-show="loadingPage" style="position:absolute;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);margin-left:-16px;">
+  <md-progress-circular class="md-accent md-hue-1 file-loading-circle" md-mode="indeterminate" md-diameter="100" style="margin-left:45%;margin-top:300px;"></md-progress-circular>
+</div>

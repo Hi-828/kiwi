@@ -1,0 +1,17 @@
+<div class="tile template-2"  style="background-color: {{tile.backgroundColor}}">
+  <div class="header" layout="row" layout-align="start center" style="background-color: {{tile.backgroundColor}};color:{{tile.color}}">
+    <div class="info">
+      <div class="title" ng-if="tile.title">
+        {{tile.title}}
+      </div>
+
+      <div class="text pt-8" ng-if="tile.blurb">
+        {{tile.blurb}}
+      </div>
+    </div>
+  </div>
+
+  <div class="media">
+    <img class="image" ng-src="{{CommonUtil.getSmallImage3(tile.object)}}">
+  </div>
+</div>

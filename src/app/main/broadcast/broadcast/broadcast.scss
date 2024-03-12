@@ -1,0 +1,34 @@
+#broadcastlist-page {
+  .header {
+    height: 100px;
+    min-height: 100px;
+    max-height: 200px;
+    padding: 24px;
+    background-image: url("/assets/images/backgrounds/header-bg.png");
+    background-size: cover;
+  }
+
+  .table-row {
+    /*cursor: pointer;*/
+  }
+  .table-row:hover {
+    background: #f7f7f7;
+  }
+  md-radio-group md-radio-button { margin: 0px; }
+  md-radio-button {float:left;padding-right:10px;}
+
+  div.thumb-cover {
+    width: 80px;
+    height: 80px;
+    margin:6px 0;
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+
+    .thumb {
+      max-width: 80px;
+      max-height: 80px;
+    }
+  }
+}
+

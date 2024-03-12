@@ -1,0 +1,10 @@
+#product-page {
+  .header {
+    height: 100px;
+    min-height: 100px;
+    max-height: 200px;
+    padding: 24px;
+    background-image: url("/assets/images/backgrounds/header-bg.png");
+    background-size: cover;
+  }
+}

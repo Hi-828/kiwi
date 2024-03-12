@@ -1,0 +1,66 @@
+<div id="login" class="flex-scrollable" layout="column" ms-scroll>
+    <div id="login-form-wrapper" layout="column" layout-align="center center">
+        <div id="login-form" class="md-whiteframe-8dp">
+
+            <div class="title">Log in to your account</div>
+
+            <form name="loginForm" novalidate>
+                <md-input-container class="md-block" md-no-float>
+                    <input type="text" name="username" ng-model="vm.form.username" placeholder="Username" required ng-change="changeInput()">
+                    <div ng-messages="loginForm.username.$error" role="alert" multiple>
+                        <div ng-message="required">
+                            <span>Username field is required</span>
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block" md-no-float>
+                    <input type="password" name="password" ng-model="vm.form.password" placeholder="Password"
+                           required ng-change="changeInput()">
+                    <div ng-messages="loginForm.password.$error" role="alert">
+                        <div ng-message="required">
+                            <span>Password field is required</span>
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <md-button type="submit" class="md-raised md-accent submit-button" aria-label="LOG IN"
+                           ng-disabled="loginForm.$invalid || loginForm.$pristine" ng-click="vm.login();">
+                    LOG IN
+                </md-button>
+              <md-input-container class="md-block" md-no-float>
+                <div ng-messages ng-show="loginError" role="alert" style="text-align: center;">
+                  <span>User credentials are incorrect</span>
+                </div>
+              </md-input-container>
+            </form>
+<!--
+            <div class="separator">
+                <span class="text" translate="LOGIN.OR">OR</span>
+            </div>
+
+            <md-button class="md-raised google">
+                <div layout="row" layout-align="center center">
+                <span>
+                    <md-icon md-font-icon="icon-google-plus" class="s16"></md-icon>
+                    <span translate="LOGIN.WITH_GOOGLE">Log in with Google</span>
+                </span>
+                </div>
+            </md-button>
+
+            <md-button class="md-raised facebook">
+                <div layout="row" layout-align="center center">
+                <span>
+                    <md-icon md-font-icon="icon-facebook" class="s16"></md-icon>
+                    <span translate="LOGIN.WITH_FACEBOOK">Log in with Facebook</span>
+                </span>
+                </div>
+            </md-button>
+
+            <div class="register" layout="row" layout-sm="column" layout-align="center center">
+                <span class="text" translate="LOGIN.DONT_HAVE_ACCOUNT">Don't have an account?</span>
+                <a class="link" ui-sref="app.pages_auth_register" translate="LOGIN.CREATE_ACCOUNT">Create an account</a>
+            </div>-->
+        </div>
+    </div>
+</div>

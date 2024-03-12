@@ -1,0 +1,54 @@
+<div id="product-category-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+        <!--<md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent">Settings</span>-->
+      </div>
+      <div class="title">Product Categories</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+  <!-- CONTENT -->
+  <div class="content" style="margin:0;padding:0">
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab ng-repeat="prodType in productTypes" label="{{prodType.name}}">
+        <md-content class="md-padding">
+          <div class="md-title mb-10">
+            <md-button class="md-raised md-primary" ng-click="create($event, prodType)"> Add Category </md-button>
+          </div>
+          <div class="simple-table-container md-whiteframe-4dp">
+            <table class="simple hover" ms-responsive-table>
+              <thead>
+              <tr>
+                <th>Name</th>
+                <!--<th>Product Type</th>-->
+                <th>Item Counts</th>
+                <th style="text-align: center">Enabled</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="item in productCategoryGroup[prodType._id]" ng-click="edit($event, item)" class="table-row {{productCategory._id==item._id?'selected':''}}">
+                <td >{{item.name}}</td>
+                <!-- <td >{{item.productType.name}}</td>-->
+                <td >{{item.numItems}}</td>
+                <td style="text-align: center">{{CommonUtil.convertBoolean(item.enabled)}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+    <div data-ng-show="loadingPage" layout="row" layout-sm="column" layout-align="space-around" style="position: absolute;top: 0;left: 0;width: 100%;height:100%;background: rgba(0,0,0,0.2);z-index:1000;">
+      <div layout="row" layout-align="center center">
+        <md-progress-circular class="md-accent md-hue-1" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+      </div>
+    </div>
+  </div>
+  <!-- / CONTENT -->
+
+</div>

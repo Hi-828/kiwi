@@ -1,0 +1,227 @@
+<div class="section-box info-box general md-whiteframe-1dp" layout="column">
+  <header class="md-accent-bg">
+    <div class="title">Geographic Restrictions
+      <md-button class="md-raised md-primary" ng-click="importGeographyData()" style="float:right" ng-show="IsShowImportButton"> Import Geometry Data </md-button>
+    </div>
+  </header>
+  <div class="content">
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="Countries">
+        <md-content class="md-padding">
+          <div layout="column" layout-gt-sm="row">
+            <div style="margin-right:40px">
+              <div><label>Available Countries</label></div>
+              <div>
+                <select class="geography-select"
+                        ng-options="country.name for country in geography.countries | filter:notInRestrict('country')"
+                        multiple
+                        ng-model="selectedCountries"
+                        ng-change="selectedGeography('country')"
+                ></select>
+              </div>
+            </div>
+            <div>
+              <div><label>Blocked Countries</label></div>
+              <div>
+                <select class="geography-select"
+                        ng-options="item.geography.name for item in restriction.countries "
+                        multiple
+                        ng-model="selectedRestrictCountries"
+                        ng-change="restrictSelected('country')"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </md-content>
+      </md-tab>
+      <md-tab label="US States">
+        <md-content class="md-padding">
+          <div layout="column" layout-gt-sm="row">
+            <div style="margin-right:40px">
+              <div><label>Available States</label></div>
+              <div>
+                <select class="geography-select"
+                        ng-options="item.name for item in geography.states | filter:notInRestrict('state')"
+                        multiple
+                        ng-model="selectedStates"
+                        ng-change="selectedGeography('state')"
+                ></select>
+              </div>
+            </div>
+            <div>
+              <div><label>Blocked States</label></div>
+              <div>
+                <select class="geography-select"
+                        ng-options="item.geography.name for item in restriction.states "
+                        multiple
+                        ng-model="selectedRestrictStates"
+                        ng-change="restrictSelected('state')"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </md-content>
+      </md-tab>
+      <md-tab label="Canadian Provinces">
+        <md-content class="md-padding">
+          <div layout="column" layout-gt-sm="row">
+            <div style="margin-right:40px">
+              <div><label>Available Provinces</label></div>
+              <div>
+                <select class="geography-select"
+                        ng-options="item.name for item in geography.provinces | filter:notInRestrict('province')"
+                        multiple
+                        ng-model="selectedProvinces"
+                        ng-change="selectedGeography('province')"
+                ></select>
+              </div>
+            </div>
+            <div>
+              <div><label>Blocked Provinces</label></div>
+              <div>
+                <select class="geography-select"
+                        ng-options="item.geography.name for item in restriction.provinces "
+                        multiple
+                        ng-model="selectedRestrictProvinces"
+                        ng-change="restrictSelected('province')"
+                ></select>
+              </div>
+            </div>
+          </div>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </div>
+</div>
+<div class="section-box info-box general md-whiteframe-1dp" layout="column" style="position:relative;">
+  <header class="md-accent-bg" style="padding-bottom: 5px;">
+    <div class="title">Texting Settings
+      <md-button class="md-raised md-primary" ng-click="saveUserTextingConfig()" style="float:right;margin-top:-5px;" ng-disabled="userTextingConfigForm.$invalid || userTextingConfigForm.$pristine"> Save </md-button>
+    </div>
+  </header>
+  <div class="content">
+    <form name="userTextingConfigForm" class="md-inline-form" novalidate>
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container flex style="margin-bottom: 18px;margin-top:0">
+          <md-checkbox name="textingEnabled" ng-model="userTextingConfig.textingEnabled">Texting Enabled</md-checkbox>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row" style="margin-left:50px">
+        <md-input-container flex style="margin-bottom: 0">
+          <label>Token cost per message</label>
+          <input type="number" name="textingTokenCost" ng-model="userTextingConfig.textingTokenCost" ng-disabled="!userTextingConfig.textingEnabled"  ng-pattern="/^[0-9]+([,.][0-9]+)?$/">
+          <div ng-messages="userTextingConfigForm.textingTokenCost.$error" role="alert">
+            <div ng-message="pattern">
+              <span>Field must be a valid</span>
+            </div>
+          </div>
+        </md-input-container>
+      </div>
+    </form>
+    <div ng-show="savingUserTextingConfig" style="position:absolute;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);margin-left:-16px;">
+      <md-progress-circular class="md-accent md-hue-1 file-loading-circle" md-mode="indeterminate" md-diameter="100" style="margin-left:45%;margin-top:100px;"></md-progress-circular>
+    </div>
+  </div>
+</div>
+<div class="section-box info-box general md-whiteframe-1dp" layout="column" style="position:relative;">
+  <header class="md-accent-bg" style="padding-bottom: 5px;">
+    <div class="title">Broadcast Settings
+      <md-button class="md-raised md-primary" ng-click="saveUserConfig()" style="float:right;margin-top:-5px;" ng-disabled="userConfigForm.$invalid || userConfigForm.$pristine"> Save </md-button>
+    </div>
+  </header>
+  <div class="content">
+    <form name="userConfigForm" class="md-inline-form" novalidate>
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container flex style="margin-bottom: 0;margin-top:0">
+          <md-checkbox name="allowPrivateShows" ng-model="userConfig.allowPrivateShows">Allow private shows</md-checkbox>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row" style="margin-left:50px">
+        <md-input-container flex style="margin-bottom: 18px">
+          <md-checkbox name="allowPrivateShowRecordings" ng-model="userConfig.allowPrivateShowRecordings" ng-disabled="!userConfig.allowPrivateShows">Allow recording of private shows?</md-checkbox>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row" style="margin-left:50px">
+        <md-input-container flex style="margin-bottom: 0">
+          <label>Token cost per minute for private show</label>
+          <input type="text" name="privateShowTokenCost" ng-model="userConfig.privateShowTokenCost" ng-disabled="!userConfig.allowPrivateShows"  ng-pattern="/^[0-9]+([,.][0-9]+)?$/">
+          <div ng-messages="userConfigForm.privateShowTokenCost.$error" role="alert">
+            <div ng-message="pattern">
+              <span>Field must be a valid</span>
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container flex style="margin-bottom: 0">
+          <label>Token cost per minute for spy show</label>
+          <input type="text" name="spyShowTokenCost" ng-model="userConfig.spyShowTokenCost" ng-disabled="!userConfig.allowPrivateShows"  ng-pattern="/^[0-9]+([,.][0-9]+)?$/">
+          <div ng-messages="userConfigForm.spyShowTokenCost.$error" role="alert">
+            <div ng-message="pattern">
+              <span>Field must be a valid</span>
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container flex style="margin-bottom: 0">
+          <label>Minimum token balance to start private show</label>
+          <input type="number" name="privateShowMinimumTokens" ng-model="userConfig.privateShowMinimumTokens" ng-disabled="!userConfig.allowPrivateShows">
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container flex style="margin-bottom: 18px;margin-top:0">
+          <md-checkbox ng-model="userConfig.allowGroupShows">Allow group shows</md-checkbox>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row" style="margin-left:50px">
+        <md-input-container flex style="margin-bottom: 0">
+          <label>Minimum number of users</label>
+          <md-select ng-model="userConfig.minGroupSize"  ng-disabled="!userConfig.allowGroupShows">
+            <md-option value="2">2</md-option>
+            <md-option value="3">3</md-option>
+            <md-option value="4">4</md-option>
+            <md-option value="5">5</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container flex style="margin-bottom: 0">
+          <label>Token cost per minute</label>
+          <input type="text" name="groupShowTokenCost" ng-model="userConfig.groupShowTokenCost"  ng-disabled="!userConfig.allowGroupShows"  ng-pattern="/^[0-9]+([,.][0-9]+)?$/">
+          <div ng-messages="userConfigForm.groupShowTokenCost.$error" role="alert">
+            <div ng-message="pattern">
+              <span>Field must be a valid</span>
+            </div>
+          </div>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container flex style="margin-bottom: 0;margin-top:0">
+          <md-checkbox ng-model="userConfig.camPasswordRequired">Password required for viewing cam?</md-checkbox>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row" style="margin-left:50px">
+        <md-input-container flex style="margin-bottom: 0">
+          <label>Password</label>
+          <input type="text" name="camPassword" ng-model="userConfig.camPassword"  ng-disabled="!userConfig.camPasswordRequired">
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container flex style="margin-bottom: 0">
+          <md-checkbox ng-model="userConfig.hideCamOnSite">Hide cam on site?</md-checkbox>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container flex style="margin-bottom: 0">
+          <md-checkbox ng-model="userConfig.hideCamInNetwork">Do not appear on network sites</md-checkbox>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container flex style="margin-bottom: 0">
+          <md-checkbox ng-model="userConfig.hideScore">Hide my satisfaction score</md-checkbox>
+        </md-input-container>
+      </div>
+    </form>
+    <div ng-show="savingUserConfig" style="position:absolute;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);margin-left:-16px;">
+      <md-progress-circular class="md-accent md-hue-1 file-loading-circle" md-mode="indeterminate" md-diameter="100" style="margin-left:45%;margin-top:300px;"></md-progress-circular>
+    </div>
+  </div>
+</div>
+<div ng-show="loadingPage" style="position:absolute;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);margin-left:-16px;">
+  <md-progress-circular class="md-accent md-hue-1 file-loading-circle" md-mode="indeterminate" md-diameter="100" style="margin-left:45%;margin-top:300px;"></md-progress-circular>
+</div>

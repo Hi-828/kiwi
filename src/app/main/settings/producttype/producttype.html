@@ -1,0 +1,62 @@
+<div id="product-type-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+        <!--<md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent">Settings</span>-->
+      </div>
+      <div class="title">Product Types</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+    <div class="md-title mb-10">
+      <md-button class="md-raised md-primary" ng-click="create($event)"> Add Product Type </md-button>
+    </div>
+    <div class="simple-table-container md-whiteframe-4dp">
+      <table class="simple hover" ms-responsive-table>
+        <thead>
+        <tr>
+          <th>Icon</th>
+          <th>Name</th>
+          <th style="text-align: center">Video Preview Enabled</th>
+          <th style="text-align: center">Enabled</th>
+          <th style="text-align: center">Downloadable</th>
+          <th>Allowed Types</th>
+          <th>Max Attachments</th>
+          <th># Products</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in productTypes" ng-click="edit($event, item)" class="table-row {{productType._id==item._id?'selected':''}}">
+          <td><img src="./assets/images/product-type-icons/{{item.iconName}}.png"></td>
+          <td >{{item.name}}</td>
+          <td style="text-align: center">{{CommonUtil.convertBoolean(item.videoPreviewEnabled)}}</td>
+          <td style="text-align: center">{{CommonUtil.convertBoolean(item.enabled)}}</td>
+          <td style="text-align: center">{{CommonUtil.convertBoolean(item.downloadable)}}</td>
+          <td >{{CommonUtil.convertArrayToString(item.allowedTypes)}}</td>
+          <td >{{item.maxAttachments}}</td>
+          <td >{{CommonUtil.ifnull(item.productCount, 0)}}</td>
+        </tr>
+        <tr ng-if="NoData()">
+          <td colspan="6" class="text-center">There is no product type.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div data-ng-show="loadingPage" layout="row" layout-sm="column" layout-align="space-around" style="position: absolute;top: 0;left: 0;width: 100%;height:100%;background: rgba(0,0,0,0.2);z-index:1000;">
+      <div layout="row" layout-align="center center">
+        <md-progress-circular class="md-accent md-hue-1" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+      </div>
+    </div>
+
+  </div>
+  <!-- / CONTENT -->
+
+</div>

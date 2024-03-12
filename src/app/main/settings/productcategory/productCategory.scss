@@ -1,0 +1,32 @@
+#product-category-page {
+  .header {
+    height: 100px;
+    min-height: 100px;
+    max-height: 200px;
+    padding: 24px;
+    background-image: url("/assets/images/backgrounds/header-bg.png");
+    background-size: cover;
+  }
+
+  .form-title {
+    padding:10px 0;
+    font-size:20px;
+  }
+
+  .table-row {
+    /*cursor: pointer;*/
+  }
+  .table-row:hover {
+    background: #f7f7f7;
+  }
+
+  .table-row.selected {
+    background: #b8dcf1;
+  }
+
+  .group-label {
+    font-weight: 500;
+    font-size: 18px;
+    color: skyblue;
+  }
+}

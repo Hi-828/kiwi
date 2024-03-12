@@ -1,0 +1,65 @@
+<div id="broadcastlist-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+        <!--<md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent">Broadcast</span>-->
+      </div>
+      <div class="title">Broadcast List</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div layout="row" class="md-title mb-10">
+      <div flex style="font-size:14px;">
+        <md-input-container flex style="margin-bottom:0">
+          <md-radio-group ng-model="selectedBroadcastType" ng-change="reBuild()">
+            <md-radio-button value="0">ALL BROADCASTS</md-radio-button>
+            <md-radio-button value=1>LIVE NOW</md-radio-button>
+          </md-radio-group>
+        </md-input-container>
+        <md-button class="md-raised md-primary" ng-click="createBroadcast($event)" style="float:right"> Add Broadcast </md-button>
+      </div>
+    </div>
+    <div class="white-bg md-whiteframe-4dp">
+      <md-table-container>
+        <table md-table md-progress="promise" class="hover">
+          <thead md-head>
+          <tr md-row>
+            <th md-column style="text-align: center;">Avatar</th>
+            <th md-column>User</th>
+            <th md-column>Topic</th>
+            <th md-column>Start Time</th>
+            <th md-column>End Time</th>
+            <th md-column style="text-align:center;">Token Goal</th>
+            <th md-column style="text-align:center;">Token Earned</th>
+            <th md-column style="text-align:center;">Total Viewers</th>
+          </tr>
+          </thead>
+          <tbody md-body>
+          <tr class="table-row" md-row md-auto-select ng-repeat="item in broadcastList" ng-click="editBroadcast(item)">
+            <td md-cell><div class="thumb-cover"><img class="thumb" ng-src="{{CommonUtil.getAvatarThumbnail(item.user.avatar)}}"></div></td>
+            <td md-cell>{{ item.user.firstName + " " + item.user.lastName }}</td>
+            <td md-cell>{{ item.topic }}</td>
+            <td md-cell>{{ CommonUtil.formatDateTime(item.startTime) }}</td>
+            <td md-cell>{{ CommonUtil.formatDateTime(item.endTime) }}</td>
+            <td md-cell style="text-align:center;">{{ item.tokenGoal }}</td>
+            <td md-cell style="text-align:center;">{{ item.tokensEarned }}</td>
+            <td md-cell style="text-align:center;">{{ item.totalViewers }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+      <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{totalBroadcastCount}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+    </div>
+
+  </div>
+  <!-- / CONTENT -->
+
+</div>

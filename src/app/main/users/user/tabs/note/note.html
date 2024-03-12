@@ -1,0 +1,41 @@
+<div class="timeline" layout="column" flex="100">
+  <div class="profile-box add-post md-whiteframe-4dp">
+    <div class="form" flex>
+      <textarea placeholder="Write a comment..." ng-model="noteText"></textarea>
+      <footer layout="row" layout-align="space-between center">
+        <div layout="row" layout-align="start center">
+        </div>
+        <md-button ng-click="createNote()" class="post-button md-accent md-raised" aria-label="ADD">
+          Post comment
+        </md-button>
+      </footer>
+    </div>
+  </div>
+  <md-divider></md-divider>
+  <div class="timeline-item md-whiteframe-1dp">
+    <div class="content">
+      <footer class="" layout="column" layout-align="start start">
+        <div ng-if="notes.length > 0" class="comment-count">{{notes.length}} comments
+          <md-icon md-font-icon="icon-keyboard_arrow_down"></md-icon>
+        </div>
+        <div ng-if="notes.length == 0" class="comment-count">No comments</div>
+        <div class="comment" layout="row" ng-repeat="item in notes">
+          <img ng-src="{{CommonUtil.getSmallImage(item.by.avatar)}}" class="avatar" style="float:left;"/>
+          <div flex layout="column" style="display:inline-block;float:left">
+            <div layout="row" layout-align="start center">
+              <span class="username">{{item.by.firstName + " " + item.by.lastName}}</span>
+              <span class="time">{{CommonUtil.getPastDateTime(item._bmd.createdAt)}}</span>
+            </div>
+            <div class="message">
+              {{item.note}}
+            </div>
+          </div>
+        </div>
+        <md-button ng-click="loadNoteList()" ng-show="noteAvailableMore">Load more</md-button>
+      </footer>
+    </div>
+  </div>
+</div>
+<div ng-show="loadingPage" style="position:absolute;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);margin-left:-16px;">
+  <md-progress-circular class="md-accent md-hue-1 file-loading-circle" md-mode="indeterminate" md-diameter="100" style="margin-left:45%;margin-top:50px;"></md-progress-circular>
+</div>

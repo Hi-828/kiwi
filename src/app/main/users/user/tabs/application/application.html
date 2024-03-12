@@ -1,0 +1,180 @@
+<div layout="row">
+  <div flex>
+    <div class="md-title mb-10" layout="row" layout-align="end center">
+      <md-button class="md-raised md-primary" ng-click="saveUserApplication($event)" ng-disabled="userApplicationForm.$invalid || userApplicationForm.$pristine"> Save </md-button>
+    </div>
+  </div>
+</div>
+<div class="simple-table-container md-whiteframe-4dp">
+  <md-content class="md-padding">
+    <form name="userApplicationForm" class="md-inline-form" novalidate>
+      <div layout="column" layout-gt-sm="row" style="margin-bottom: 10px">
+        <md-input-container flex="50" style="margin-top:0;">
+          <md-checkbox ng-model="userApplication.provider">Provider</md-checkbox>
+        </md-input-container>
+        <md-input-container flex="50" style="margin-top:0;">
+          <!--<md-checkbox ng-model="userApplication.enabled">Profile Enabled</md-checkbox>-->
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex style="margin-bottom: 0;">
+          <div class="mb-10">Visibility</div>
+          <md-radio-group ng-model="userApplication.visibility">
+            <md-radio-button value="{{item}}" ng-repeat="item in CommonUtil.UserVisibility">{{item}}</md-radio-button>
+          </md-radio-group>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex style="margin-bottom: 0;">
+          <div class="mb-10">Status</div>
+          <md-radio-group ng-model="userApplication.status">
+            <md-radio-button value="{{status.value}}" ng-repeat="status in CommonUtil.UserStatus">{{status.value}}</md-radio-button>
+          </md-radio-group>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <div flex="50">
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex class="upload-file-container">
+              <div>Snapshot</div>
+              <div ng-hide="userApplication.snapshot" ng-class="'divClass dropableArea'" style="height: 120px; line-height: 1.5;text-align: center" class="drop-container" drag-and-drop
+                   drop-handler="onFileUpload(files,'snapshot', 'proofDocument')">
+                <div class="drop-informer" style="position: relative; top: 50%; margin-top: -19px;">
+                  Drop image file here
+                </div>
+              </div>
+              <div ng-show="userApplication.snapshot" style="text-align:center">
+                <a href="{{CommonUtil.getDownloadURL(userApplication.snapshot)}}" target="_blank">
+                  <img ng-src="{{CommonUtil.getSmallImage3(userApplication.snapshot)}}" style="cursor: pointer;height:100px;"></a>
+              </div>
+              <div>
+                <input type="file" name="snapshot" onchange="angular.element(this).scope().onFileUpload(this.files,'snapshot');" ng-show="false">
+              </div>
+              <div data-ng-show="isUploading['snapshot']" class="file-loading">
+                <div style="margin-top: 70px;">
+                  <div class="file-progress">
+                    <div class="progress-bar-warning" style="width:{{fileProgress['snapshot']}}%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="control-button text-center">
+                <md-button class="md-raised md-primary" onclick="angular.element(this).scope().openFile('snapshot')"> Upload </md-button>
+                <md-button class="md-raised md-warn" ng-click="deleteFile('snapshot')" ng-disabled="!userApplication.snapshot"> Delete </md-button>
+              </div>
+            </md-input-container>
+          </div>
+        </div>
+        <div flex="50">
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex class="upload-file-container">
+              <div>Photo ID Snapshot</div>
+              <div ng-hide="userApplication.idSnapshot" ng-class="'divClass dropableArea'" style="height: 120px; line-height: 1.5;text-align: center" class="drop-container" drag-and-drop
+                   drop-handler="onFileUpload(files,'idSnapshot')">
+                <div class="drop-informer" style="position: relative; top: 50%; margin-top: -19px;">
+                  Drop image file here
+                </div>
+              </div>
+              <div ng-show="userApplication.idSnapshot" style="text-align:center">
+                <a href="{{CommonUtil.getDownloadURL(userApplication.idSnapshot)}}" target="_blank">
+                  <img ng-src="{{CommonUtil.getSmallImage3(userApplication.idSnapshot)}}" style="cursor: pointer;height:100px;">
+                </a>
+              </div>
+              <div>
+                <input type="file" name="idSnapshot" onchange="angular.element(this).scope().onFileUpload(this.files,'idSnapshot');" ng-show="false">
+              </div>
+              <div data-ng-show="isUploading['idSnapshot']" class="file-loading">
+                <div style="margin-top: 70px;">
+                  <div class="file-progress">
+                    <div class="progress-bar-warning" style="width:{{fileProgress['idSnapshot']}}%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="control-button text-center">
+                <md-button class="md-raised md-primary" onclick="angular.element(this).scope().openFile('idSnapshot')"> Upload </md-button>
+                <md-button class="md-raised md-warn" ng-click="deleteFile('idSnapshot')" ng-disabled="!userApplication.idSnapshot"> Delete </md-button>
+              </div>
+            </md-input-container>
+          </div>
+        </div>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <div flex="50">
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex class="upload-file-container">
+              <div>Photo ID Front</div>
+              <div ng-hide="userApplication.idFront" ng-class="'divClass dropableArea'" style="height: 120px; line-height: 1.5;" class="drop-container" drag-and-drop
+                   drop-handler="onFileUpload(files,'idFront')">
+                <div class="drop-informer" style="position: relative; top: 50%; margin-top: -19px;">
+                  Drop files here to upload.
+                </div>
+              </div>
+              <div ng-show="userApplication.idFront" style="text-align:center">
+                <a href="{{CommonUtil.getDownloadURL(userApplication.idFront)}}" target="_blank">
+                  <img ng-src="{{CommonUtil.getSmallImage3(userApplication.idFront)}}" ng-click="openLightboxModal('idFront', $event)" style="cursor: pointer;height:100px;">
+                </a>
+              </div>
+              <div>
+                <input type="file" name="idFront" onchange="angular.element(this).scope().onFileUpload(this.files,'idFront');" aria-label="idFront" ng-show="false">
+              </div>
+              <div data-ng-show="isUploading['idFront']" class="file-loading">
+                <div style="margin-top: 70px;">
+                  <div class="file-progress">
+                    <div class="progress-bar-warning" style="width:{{fileProgress['idFront']}}%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="control-button text-center">
+                <md-button class="md-raised md-primary" onclick="angular.element(this).scope().openFile('idFront')"> Upload </md-button>
+                <md-button class="md-raised md-warn" ng-click="deleteFile('idFront')" ng-disabled="!userApplication.idFront"> Delete </md-button>
+              </div>
+            </md-input-container>
+          </div>
+        </div>
+        <div flex="50">
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex class="upload-file-container">
+              <div>Photo ID Back</div>
+              <div ng-hide="userApplication.idBack" ng-class="'divClass dropableArea'" style="height: 120px; line-height: 1.5;" class="drop-container" drag-and-drop
+                   drop-handler="onFileUpload(files,'idBack')">
+                <div class="drop-informer" style="position: relative; top: 50%; margin-top: -19px;">
+                  Drop files here to upload.
+                </div>
+              </div>
+              <div ng-show="userApplication.idBack" style="text-align:center">
+                <a href="{{CommonUtil.getDownloadURL(userApplication.idBack)}}" target="_blank">
+                  <img ng-src="{{CommonUtil.getSmallImage3(userApplication.idBack)}}" style="cursor: pointer;height:100px;">
+                </a>
+              </div>
+              <div>
+                <input type="file" name="idBack" onchange="angular.element(this).scope().onFileUpload(this.files,'idBack');" aria-label="idBack" ng-show="false">
+              </div>
+              <div data-ng-show="isUploading['idBack']" class="file-loading">
+                <div style="margin-top: 70px;">
+                  <div class="file-progress">
+                    <div class="progress-bar-warning" style="width:{{fileProgress['idBack']}}%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="control-button text-center">
+                <md-button class="md-raised md-primary" onclick="angular.element(this).scope().openFile('idBack')"> Upload </md-button>
+                <md-button class="md-raised md-warn" ng-click="deleteFile('idBack')" ng-disabled="!userApplication.idBack"> Delete </md-button>
+              </div>
+            </md-input-container>
+          </div>
+        </div>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex>
+          <label>Agreement File Url</label>
+          <input type="url" name="agreementUrl" ng-model="userApplication.agreementUrl">
+        </md-input-container>
+      </div>
+    </form>
+    <div ng-show="savingUserApplication" style="position:absolute;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);margin-left:-16px;">
+      <md-progress-circular class="md-accent md-hue-1 file-loading-circle" md-mode="indeterminate" md-diameter="100" style="margin-left:45%;margin-top:300px;"></md-progress-circular>
+    </div>
+  </md-content>
+</div>
+<div ng-show="loadingPage" style="position:absolute;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);margin-left:-16px;">
+  <md-progress-circular class="md-accent md-hue-1 file-loading-circle" md-mode="indeterminate" md-diameter="100" style="margin-left:45%;margin-top:300px;"></md-progress-circular>
+</div>

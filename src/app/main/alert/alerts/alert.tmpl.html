@@ -1,0 +1,124 @@
+<style>
+  md-input-container {
+    margin: 8px 0;
+  }
+
+  md-input-container.no-label label{
+    display:none
+   }
+
+  #alertType .md-select-value {
+    border:none !important;
+  }
+
+  md-autocomplete md-input-container {
+    padding-bottom:10px !important;
+  }
+</style>
+<md-dialog aria-label="Alert"  ng-cloak style="width:800px;">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{currentMode==1?'Add Alert':'Edit Alert'}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="assets/angular-material-assets/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content" style="padding:0">
+        <form name="editForm" class="md-inline-form" novalidate>
+          <div class="form-wrapper md-whiteframe-1dp">
+            <div layout="column" layout-gt-sm="row" ng-show="currentMode==2" style="border: 1px solid #ECE3E3;padding: 10px;">
+              <div layout="row">
+                <img ng-src="{{CommonUtil.getAvatarThumbnail(alert.user.avatar)}}" style="width:80px;height:80px;border-radius: 10px;">
+              </div>
+              <div layout="column" style="margin-left:20px">
+                <div style="font-size:28px;font-weight: bold;margin:5px 0 10px 0">
+                  <a href="" ng-click="editUser(alert.user._id)">{{alert.user.username}}</a>
+                </div>
+                <div layout="row">
+                  <div flex><label>{{alert.user.firstName + " " + alert.user.lastName}}</label></div>
+                  <div flex>{{alert.user.email}}</div>
+                </div>
+              </div>
+            </div>
+            <div layout="column" layout-gt-sm="row">
+              <md-input-container  class="md-block no-label" flex style="height:30px;">
+                <label>Alert Type</label>
+                <md-select name="alertType" ng-model="alert.type" style="border:none;" id="alertType">
+                  <md-option ng-repeat="item in alertTypeList" ng-value="item">
+                    <b>{{item.name}}</b>
+                  </md-option>
+                  <md-option ng-value="''"><b>Other</b></md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row">
+              <md-input-container flex style="margin-bottom: 0;margin-top: 0">
+                <label id="commentLabel" ng-if="alert.comment==''">Comment</label>
+                <textarea type="text" name="comment" ng-model="alert.comment" required ng-change="changeComment()" ng-focus="focusComment()"></textarea>
+                <div ng-messages="editForm.comment.$error" role="alert">
+                  <div ng-message="required"><span>Comment field is required.</span></div>
+                </div>
+              </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row">
+              <div layout="row" flex>
+                <md-autocomplete style="width:80%;margin-bottom:0;height:60px;"
+                                 md-input-name="username"
+                                 md-selected-item="userData"
+                                 md-search-text="searchText"
+                                 md-items="item in searchUser(searchText)"
+                                 md-item-text="item.username"
+                                 md-floating-label="User" required="true" md-selected-item-change="selectedUser()">
+                  <md-item-template>
+                    <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.username}}</span>
+                  </md-item-template>
+                  <div ng-messages="inputForm.username.$error" ng-if="inputForm.username.$touched">
+                    <div ng-message="required"><span>User field is required.</span></div>
+                  </div>
+                </md-autocomplete>
+              </div>
+              <md-input-container flex style="margin-bottom: 0;">
+                <label>Broadcast</label>
+                <md-select name="broadcast" ng-model="alert.refBroadcast">
+                  <md-option ng-repeat="item in broadcastList" ng-value="item">
+                    {{item.topic}}
+                  </md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row">
+              <md-input-container flex style="margin-bottom: 0;margin-top:18px;max-height:50px">
+                <label>Internal Notes</label>
+                <textarea name="internalNotes" ng-model="alert.internalNotes" rows="4" md-select-on-focus></textarea>
+              </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row">
+              <md-input-container flex style="margin-bottom: 0;margin-top:0;max-height:60px;">
+                <md-switch ng-model="alert.reviewed">
+                  Reviewed
+                </md-switch>
+              </md-input-container>
+            </div>
+          </div>
+        </form>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <div flex="50">
+        <md-button class="md-warn" ng-click="delete($event)" ng-if="currentMode==2"> Delete </md-button>
+      </div>
+      <div flex="50">
+        <div layout="row" layout-align="end center">
+          <md-button ng-click="cancel()">Cancel</md-button>
+          <md-button ng-disabled="editForm.$invalid || editForm.$pristine" ng-click="save()">
+            Save
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-actions>
+</md-dialog>

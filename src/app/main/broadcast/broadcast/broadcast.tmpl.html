@@ -1,0 +1,131 @@
+<style>
+  md-input-container {
+    margin: 8px 0;
+  }
+</style>
+<md-dialog aria-label="User Info"  ng-cloak style="width:800px;">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Add User</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="assets/angular-material-assets/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content" style="padding:0">
+        <div class="form-wrapper md-whiteframe-1dp">
+
+          <form name="userForm" class="md-inline-form" novalidate>
+            <div layout="column" layout-gt-sm="row">
+              <md-input-container flex>
+                <input type="text" name="firstname" ng-model="basicForm.firstName" placeholder="First Name">
+              </md-input-container>
+
+              <md-input-container flex>
+                <input type="text" name="lastname" ng-model="basicForm.lastName" placeholder="Last Name">
+              </md-input-container>
+            </div>
+
+            <div layout="column" layout-gt-sm="row">
+              <md-input-container flex>
+                <input type="text" name="username" ng-model="basicForm.username" placeholder="Username" required>
+                <div ng-messages="userForm.username.$error" role="alert">
+                  <div ng-message="required"><span>Username field is required.</span></div>
+                </div>
+              </md-input-container>
+
+              <md-input-container flex>
+                <input type="email" name="email" ng-model="basicForm.email" placeholder="Email" required>
+                <div ng-messages="userForm.email.$error" role="alert">
+                  <div ng-message="required"><span>Email field is required.</span></div>
+                </div>
+              </md-input-container>
+            </div>
+
+            <div layout="column" layout-gt-sm="row">
+              <md-input-container flex>
+                <input type="password" name="password" ng-model="basicForm.password" placeholder="Password" required>
+                <div ng-messages="userForm.password.$error" role="alert">
+                  <div ng-message="required"><span>Username field is required.</span></div>
+                </div>
+              </md-input-container>
+
+              <md-input-container flex>
+                <input type="password" name="passwordConfirm" placeholder="Confirm Password" ng-model="basicForm.passwordConfirm" required compare-to="basicForm.password">
+                <div ng-messages="userForm.passwordConfirm.$error" role="alert">
+                  <div ng-message="required"><span>Password field is required.</span></div>
+                  <div ng-message="compare-to"><span>Password doesn't match</span></div>
+                </div>
+              </md-input-container>
+            </div>
+
+            <div layout="column" layout-gt-xs="row">
+              <md-input-container  class="md-block" flex>
+                <label>Phone Number</label>
+                <input type="text" name="phoneNumber" ng-model="basicForm.phoneNumber">
+              </md-input-container>
+
+              <md-input-container  class="md-block" flex>
+                <label>Gender</label>
+                <md-select ng-model="basicForm.gender">
+                  <md-option ng-repeat="gender in genders" value="{{gender}}">
+                    {{gender}}
+                  </md-option>
+                </md-select>
+              </md-input-container>
+
+              <md-datepicker ng-model="basicForm.dateOfBirth" md-placeholder="Date of Birth" style="margin-top:4px;margin-right:-16px;"></md-datepicker>
+            </div>
+
+            <div layout="column" layout-gt-xs="row">
+              <md-input-container flex>
+                <label>Address1</label>
+                <input type="text" name="address1" ng-model="basicForm.address1">
+              </md-input-container>
+              <md-input-container flex>
+                <label>Address2</label>
+                <input type="text" name="address2" ng-model="basicForm.address2">
+              </md-input-container>
+            </div>
+
+            <div layout="column" layout-gt-xs="row">
+                <md-input-container flex>
+                  <label>City</label>
+                  <input type="text" name="city" ng-model="basicForm.city">
+                </md-input-container>
+
+              <md-input-container flex>
+                <label>State</label>
+                <input type="text" name="state" ng-model="basicForm.state">
+              </md-input-container>
+
+              <md-input-container flex>
+                <label>Postal Code</label>
+                <input name="postalcode" ng-model="basicForm.postalCode" ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
+                <div ng-messages="userForm.postalcode.$error" role="alert" multiple>
+                  <div ng-message="pattern"><span>That doesn't look like a valid postal code.</span></div>
+                  <div ng-message="md-maxlength">
+                    <span>Postal code can't be longer than 5 characters.</span>
+                  </div>
+                </div>
+              </md-input-container>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="cancel()">
+       Cancel
+      </md-button>
+      <md-button ng-disabled="userForm.$invalid || userForm.$pristine" ng-click="SaveUser()">
+        OK
+      </md-button>
+    </md-dialog-actions>
+</md-dialog>

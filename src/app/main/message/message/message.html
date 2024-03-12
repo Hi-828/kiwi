@@ -1,0 +1,92 @@
+<div id="message-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+      </div>
+      <div class="title">Messages</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+    <div class="simple-table-container md-whiteframe-4dp md-padding">
+      <div class="animate-slide-left" ng-hide="chatActive" layout="column" style="position:relative">
+        <div class="md-title mb-10">
+          <md-button class="md-raised md-primary" ng-click="createConversation($event)"> New Conversation </md-button>
+        </div>
+        <div class="simple-table-container">
+          <table class="simple hover" ms-responsive-table>
+            <thead>
+            <tr>
+              <th style="text-align:center;">Avatar</th>
+              <th>Username</th>
+              <th>Last message</th>
+              <th>Last message at</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in conversations" class="table-row" style="{{(item.user1._id == user._id && !item.read1)||(item.user2._id == user._id && !item.read2)?'font-weight:bold':''}}" ng-click="editConversation($event, item)">
+              <td style="padding:0;text-align:center"><div class="thumb-cover"><img class="thumb" ng-src="{{getUserAvatar(item)}}"></div></td>
+              <td >{{getUsername(item)}}</td>
+              <td ><div style="overflow: hidden;text-overflow: ellipsis;-o-text-overflow: ellipsis;white-space: nowrap;max-width: 400px;">{{item.lastMessage.message}}</div></td>
+              <td >{{CommonUtil.formatSimpleDateTime(item._bmd.updatedAt)}}</td>
+            </tr>
+            <tr ng-if="NoData()">
+              <td colspan="4" class="text-center">There is no conversation</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div data-ng-show="isLoading" layout="row" layout-sm="column" layout-align="space-around" style="position: absolute;top: 0;left: 0;width: 100%;height:100%;background: rgba(0,0,0,0.2);z-index:1000;">
+        <div layout="row" layout-align="center center">
+          <md-progress-circular class="md-accent md-hue-1" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+        </div>
+      </div>
+      <div class="chat animate-slide-right" ng-show="chatActive" layout="column">
+        <md-toolbar class="md-accent" style="background: transparent;color:black;border-bottom:1px solid rgba(0, 0, 0, 0.12);">
+          <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+              <img class="avatar" ng-src="{{CommonUtil.getSmallImage(contact.avatar)}}">
+              <h4>
+                <span style="font-size:20px;">{{contact.username}}</span>
+              </h4>
+            </div>
+            <div layout="row" layout-align="end center">
+              <md-button class="md-raised md-primary" ng-click="toggleChat()"> Close Conversation </md-button>
+            </div>
+          </div>
+        </md-toolbar>
+        <md-content flex layout-paddings ms-scroll id="chat-dialog">
+          <div layout="row" ng-repeat="dialog in chat.dialog" class="md-padding message-row"
+               ng-class="dialog.who">
+            <img ng-if="dialog.who ==='contact'" ng-src="{{CommonUtil.getSmallImage(contact.avatar)}}" class="avatar"
+                 alt="{{contact.name}}"/>
+            <img ng-if="dialog.who ==='user'" class="avatar" ng-src="{{CommonUtil.getSmallImage(user.avatar)}}">
+            <div class="bubble" flex>
+              <div class="message">{{dialog.message}}</div>
+              <div class="time secondary-text">{{CommonUtil.getPastDateTime(dialog.time)}}</div>
+            </div>
+          </div>
+        </md-content>
+        <div>
+          <form ng-submit="reply()" layout="row" class="reply" layout-align="start center" style="position:relative;">
+            <textarea ng-keyup="$event.keyCode == 13 ? reply() : null" flex ng-model="replyMessage" placeholder="Type and hit enter to send message"></textarea>
+            <md-button class="md-fab" type="submit" aria-label="Send message">
+              <md-icon md-font-icon="icon-send"></md-icon>
+            </md-button>
+            <div data-ng-show="isProgressing" layout="row" layout-sm="column" layout-align="space-around" style="position: absolute;top: 0;left: 0;width: 100%;background: rgba(0,0,0,0.2);z-index:1000;">
+              <md-progress-circular class="md-accent md-hue-1" md-mode="indeterminate" md-diameter="96" style="margin-top:0"></md-progress-circular>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- / CONTENT -->
+
+</div>

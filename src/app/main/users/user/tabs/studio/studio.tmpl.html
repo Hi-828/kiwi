@@ -1,0 +1,59 @@
+<style>
+  md-input-container {
+    margin: 8px 0;
+  }
+</style>
+<md-dialog aria-label="Studio Info"  ng-cloak style="width:800px;">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{currentMode==1?'Add Studio':'Edit Studio'}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="assets/angular-material-assets/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content" style="padding:0">
+        <form name="editForm" class="md-inline-form" novalidate>
+          <div class="form-wrapper md-whiteframe-1dp">
+            <div layout="column" layout-gt-sm="row">
+              <md-input-container flex style="margin-bottom: 0">
+                <input type="text" name="name" ng-model="studio.name" placeholder="Name" required>
+                <div ng-messages="editForm.name.$error" role="alert">
+                  <div ng-message="required"><span>Name field is required.</span></div>
+                </div>
+              </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row">
+              <md-input-container flex style="margin-bottom: 0">
+                <textarea name="description" ng-model="studio.description" rows="5" md-select-on-focus placeholder="Description"></textarea>
+              </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row">
+              <md-input-container flex style="margin-bottom: 0">
+                <md-switch ng-model="studio.enabled">
+                  {{studio.enabled?'Enabled':'Disabled'}}
+                </md-switch>
+              </md-input-container>
+            </div>
+          </div>
+        </form>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <div flex="50">
+        <md-button class="md-warn" ng-click="delete($event)" ng-if="currentMode==2"> Delete </md-button>
+      </div>
+      <div flex="50">
+        <div layout="row" layout-align="end center">
+          <md-button ng-click="cancel()">Cancel</md-button>
+          <md-button ng-disabled="editForm.$invalid || editForm.$pristine" ng-click="save()">
+            Save
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-actions>
+</md-dialog>

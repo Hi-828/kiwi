@@ -1,0 +1,263 @@
+<div id="product-detail-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+        <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent"><a href="users">Users</a></span>
+        <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent"><a href="users/{{user._id}}/profile">{{user.username}}</a></span>
+        <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent"><a href="users/{{user._id}}/product/{{productType._id}}">{{productType.name}}</a></span>
+      </div>
+      <div class="title">{{createMode?'New ' + productType.name:'Edit ' + productType.name}}</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content" style="position:relative">
+    <div layout="row" layout-align="start center" layout-wrap ng-if="!createMode" style="margin-bottom:10px;">
+
+      <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
+           flex-gt-md="25">
+        <div layout="column" flex>
+          <div class="h3 secondary-text pb-8">
+            {{widget1.views.title}}
+          </div>
+          <div class="font-size-32 line-height-32 pb-16">
+            {{widget1.views.value}}
+          </div>
+          <div>
+            <nvd3 class="h-40"
+                  options="widget1.views.options"
+                  data="widget1.views.data"></nvd3>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
+           flex-gt-md="25">
+        <div layout="column" flex>
+          <div class="h3 secondary-text pb-8">
+            {{widget1.likes.title}}
+          </div>
+          <div class="font-size-32 line-height-32 pb-16">
+            {{widget1.likes.value}}
+          </div>
+          <div>
+            <nvd3 class="h-40"
+                  options="widget1.likes.options"
+                  data="widget1.likes.data"></nvd3>
+          </div>
+        </div>
+      </div>
+      <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
+           flex-gt-md="25">
+        <div layout="column" flex>
+          <div class="h3 secondary-text pb-8">
+            {{widget1.downloads.title}}
+          </div>
+          <div class="font-size-32 line-height-32 pb-16">
+            {{widget1.downloads.value}}
+          </div>
+          <div>
+            <nvd3 class="h-40"
+                  options="widget1.downloads.options"
+                  data="widget1.downloads.data"></nvd3>
+          </div>
+        </div>
+      </div>
+      <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
+           flex-gt-md="25">
+        <div layout="column" flex>
+          <div class="h3 secondary-text pb-8">
+            {{widget1.purchases.title}}
+          </div>
+          <div class="font-size-32 line-height-32 pb-16">
+            {{widget1.purchases.value}}
+          </div>
+          <div>
+            <nvd3 class="h-40"
+                  options="widget1.purchases.options"
+                  data="widget1.purchases.data"></nvd3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form name="inputForm" class="md-inline-form" novalidate>
+      <div layout="row">
+        <div flex="50" class="md-title">
+          <md-switch ng-model="product.enabled">
+            {{product.enabled?'Enabled':'Disabled'}}
+          </md-switch>
+          <md-switch ng-model="product.approved">
+            {{product.approved?'Approved':'Not approved'}}
+          </md-switch>
+          <md-switch ng-model="product.featured">
+            {{product.featured?'Featured':'Not featured'}}
+          </md-switch>
+        </div>
+        <div flex="50">
+          <div class="md-title mb-10" layout="row" layout-align="end center">
+            <md-button class="md-raised md-primary" ng-click="createMode?save():update()" ng-disabled="inputForm.$invalid || inputForm.$pristine"> Save </md-button>
+            <md-button class="md-raised md-warn" ng-click="delete()" ng-if="!createMode"> Delete </md-button>
+            <!--<md-button class="md-raised md-default" ng-click="cancel()"> Cancel </md-button>-->
+          </div>
+        </div>
+      </div>
+      <div class="white-bg md-whiteframe-4dp">
+        <div class="form-wrapper md-whiteframe-1dp">
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <label>Title</label>
+              <input type="text" name="title" ng-model="product.title" required>
+              <div ng-messages="inputForm.title.$error" role="alert">
+                <div ng-message="required"><span>Title field is required.</span></div>
+              </div>
+            </md-input-container>
+            <md-input-container flex>
+              <label>Subtitle</label>
+              <input type="text" name="subtitle" ng-model="product.subtitle">
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <textarea name="description" ng-model="product.description" rows="5" md-select-on-focus placeholder="Description"></textarea>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <div>Product Categories</div>
+              <multiple-autocomplete name="productCategories" ng-model="productCategories" ng-enter="changeSearchText()"
+                                     object-property="name" ng-click="searchTextFocus('productCategories')"
+                                     suggestions-arr="categories">
+              </multiple-autocomplete>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <div>Product Tags</div>
+              <multiple-autocomplete name="productTags" ng-model="productTags" ng-enter="createNewTag()"
+                                     object-property="name" ng-click="searchTextFocus('productTags')"
+                                     suggestions-arr="tags">
+              </multiple-autocomplete>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <div>Collaborators</div>
+              <multiple-autocomplete name="collaborators" ng-model="collaborators"
+                                     object-property="username" ng-click="searchTextFocus('collaborators')"
+                                     suggestions-arr="searchUsers">
+              </multiple-autocomplete>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex class="upload-file-container">
+              <div>Cover Photo</div>
+              <div ng-hide="product.coverPhoto" ng-class="'divClass dropableArea'" style="height: 120px; line-height: 1.5;" class="drop-container" drag-and-drop
+                   drop-handler="onFilesDropped(files,'coverPhoto')">
+                <div class="drop-informer" style="position: relative; top: 50%; margin-top: -19px;">
+                  Drop files here to upload.
+                </div>
+              </div>
+              <div ng-show="product.coverPhoto">
+                <img ng-src="{{CommonUtil.getSmallImage3(product.coverPhoto)}}" >
+              </div>
+              <div>
+                <input type="file" name="coverPhoto" onchange="angular.element(this).scope().onFileUpload(this.files,'coverPhoto');" aria-label="coverPhoto" ng-show="false">
+              </div>
+              <div data-ng-show="isUploading['coverPhoto']" class="file-loading">
+                <div style="margin-top: 70px;">
+                  <div class="file-progress">
+                    <div class="progress-bar-warning" style="width:{{fileProgress['coverPhoto']}}%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="control-button text-center">
+                <md-button class="md-raised md-primary" ng-click="openFile('coverPhoto')"> Upload </md-button>
+                <md-button class="md-raised md-warn" ng-click="deleteFile('coverPhoto')" ng-disabled="!product.coverPhoto"> Delete </md-button>
+              </div>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-xs="row" ng-if="productType.videoPreviewEnabled">
+            <md-input-container style="width:100%" class="upload-file-container">
+              <div>Preview Video</div>
+              <div ng-hide="product.previewVideo" ng-class="'divClass dropableArea'" style="height: 120px; line-height: 1.5;" class="drop-container" drag-and-drop
+                   drop-handler="onFilesDropped(files,'previewVideo')">
+                <div class="drop-informer" style="position: relative; top: 50%; margin-top: -19px;">
+                  Drop files here to upload.
+                </div>
+              </div>
+              <div ng-show="product.previewVideo">
+                <video controls id="previewVideo">
+                  <source ng-src="{{product.previewVideo._downloadURL}}" type="video/mp4" >
+                </video>
+              </div>
+              <div>
+                <input type="file" name="previewVideo" onchange="angular.element(this).scope().onFileUpload(this.files,'previewVideo');" aria-label="previewVideo" ng-show="false">
+              </div>
+              <div data-ng-show="isUploading['previewVideo']" class="file-loading">
+                <div style="margin-top: 70px;">
+                  <div class="file-progress">
+                    <div class="progress-bar-warning" style="width:{{fileProgress['previewVideo']}}%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="control-button text-center">
+                <md-button class="md-raised md-primary" ng-click="openFile('previewVideo')"> Upload </md-button>
+                <md-button class="md-raised md-warn" ng-click="deleteFile('previewVideo')" ng-disabled="!product.previewVideo"> Delete </md-button>
+              </div>
+            </md-input-container>
+          </div>
+          <div layout="column" style="margin-bottom:20px" ng-if="productType.downloadable">
+            <md-input-container style="width:100%" class="upload-file-container">
+              <div>{{productType.fileType=='video'?'Video':'File'}}</div>
+            </md-input-container>
+            <div flex>
+              <div class="files-block" ng-model="attachments" ui-sortable="attachmentSortableOptions" ng-show="isShowAttachement()" flex>
+                <div class="file-item is-editor challenge-file" ng-repeat="file in attachments">
+                  <div class="preview" ng-bind-html="getFilePreview(file)"></div>
+                  <div class="remove-button" ng-click="removeAttachment(file)"></div>
+                  <div class="upload-progress" ng-show="isAttachmentUploading(file)">
+                    <!--<md-progress-circular class="md-accent md-hue-1 file-loading-circle" md-mode="indeterminate" md-diameter="50"></md-progress-circular>-->
+                    <div class="file-progress" style="margin:60px 5%;">
+                      <div class="progress-bar-warning" style="width:{{file.progress}}%;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div flex>
+              <div ng-class="'divClass dropableArea'" style="height: 120px; line-height: 1.5;" class="drop-container" drag-and-drop
+                   drop-handler="onFilesDropped(files,'attachment')" flex >
+                <div class="drop-informer" style="position: relative; top: 50%; margin-top: -19px;">
+                  Drop files here to upload.<br>
+                  Up to {{maxAttachments}} {{CommonUtil.convertArrayToString2(allowedTypes)}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex style="margin-bottom: 0">
+              <label>Token Cost</label>
+              <input type="text" name="tokenCost" ng-model="product.tokenCost" required  ng-pattern="/^[0-9]{1,6}$/">
+              <div ng-messages="inputForm.tokenCost.$error" role="alert" multiple>
+                <div ng-message="required"><span>Token Cost field is required.</span></div>
+                <div ng-message="pattern"><span>Token Cost field must be a valid number</span></div>
+              </div>
+            </md-input-container>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div data-ng-show="isUpdatePage" layout="row" layout-sm="column" layout-align="space-around" class="file-loading">
+      <md-progress-circular class="md-accent md-hue-1" md-mode="indeterminate" md-diameter="96" style="margin-top:200px;">Saving...</md-progress-circular>
+    </div>
+  </div>
+  <!-- / CONTENT -->
+
+</div>

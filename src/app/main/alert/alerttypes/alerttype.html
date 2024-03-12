@@ -1,0 +1,48 @@
+<div id="alerttype-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+      </div>
+      <div class="title">Manage Types</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="md-title mb-10">
+      <md-button class="md-raised md-primary" ng-click="createType()"> Add Alert Type </md-button>
+    </div>
+    <div class="simple-table-container md-whiteframe-4dp">
+      <table class="simple hover" ms-responsive-table id="myTable">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Priority</th>
+        </tr>
+        </thead>
+
+        <tbody ui-sortable="sortableOptions" ng-model="typeList" ng-change="changeList()">
+          <tr ng-repeat="item in typeList" ng-click="editType(item)" class="table-row">
+            <td >{{item.name}}</td>
+            <td >{{item.priority}}</td>
+          </tr>
+          <tr ng-if="NoData()">
+            <td colspan="2" class="text-center">There is no alert type.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div data-ng-show="loadingPage" layout="row" layout-sm="column" layout-align="space-around" style="position: absolute;top: 0;left: 0;width: 100%;height:100%;background: rgba(0,0,0,0.2);z-index:1000;">
+      <div layout="row" layout-align="center center">
+        <md-progress-circular class="md-accent md-hue-1" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+      </div>
+    </div>
+  </div>
+  <!-- / CONTENT -->
+
+</div>

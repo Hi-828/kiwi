@@ -1,0 +1,48 @@
+<div id="user-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+        <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent"><a href="users">Users</a></span>
+      </div>
+      <div class="title">{{userData.firstName + " " + userData.lastName}}</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <md-tabs md-dynamic-height md-border-bottom md-selected="selectedIndex" ng-click="selectTab()">
+    <md-tab label="Profile" ui-sref="app.user.profile">
+      <md-content id="profile" ui-view="profile" class="md-padding"></md-content>
+    </md-tab>
+    <md-tab label="Application" ui-sref="app.user.application">
+      <md-content id="application" ui-view="application" class="md-padding"></md-content>
+    </md-tab>
+    <md-tab label="Financials" ui-sref="app.user.financial">
+      <md-content id="financial" ui-view="financial" class="md-padding" ></md-content>
+    </md-tab>
+    <md-tab label="Notes" ui-sref="app.user.note">
+      <md-content id="note" ui-view="note" class="md-padding" ></md-content>
+    </md-tab>
+    <md-tab label="Featured" ui-sref="app.user.featured">
+      <md-content id="featured" ui-view="featured" class="md-padding"></md-content>
+    </md-tab>
+    <md-tab ng-repeat="item in productTypes" label="{{pluralize(item.name) + ' (' + totalProductCount[item._id] + ')'}}" ng-click="openProductTab(item._id)">
+      <md-content id="product" ui-view="product" class="md-padding"></md-content>
+    </md-tab>
+    <!--<md-tab label="Studios" ui-sref="app.user.studio">
+      <md-content id="studio" ui-view="studio" class="md-padding"></md-content>
+    </md-tab>-->
+    <md-tab label="Settings" ui-sref="app.user.setting">
+      <md-content id="setting" ui-view="setting" class="md-padding" ></md-content>
+    </md-tab>
+    <md-tab label="Messages{{' (' + unreadConversationCount + ')'}}" ui-sref="app.user.message">
+      <md-content id="message" ui-view="message" class="md-padding" ></md-content>
+    </md-tab>
+  </md-tabs>
+  <!-- / CONTENT -->
+
+</div>

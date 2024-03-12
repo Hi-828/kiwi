@@ -1,0 +1,148 @@
+<style>
+  md-input-container {
+    margin: 8px 0;
+  }
+  md-autocomplete md-input-container {
+    padding-bottom:10px !important;
+  }
+
+  .file-loading {
+    width: 300px;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.83);
+    z-index: 100;
+  }
+  .minicolors-theme-bootstrap .minicolors-swatch {
+    margin-top: -7px;
+    margin-left: 5px;
+  }
+</style>
+<md-dialog aria-label="Tile"  ng-cloak style="width:800px;">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>{{createMode?'Add New Tile':'Edit Title'}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="assets/angular-material-assets/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content" style="padding:0">
+        <form name="editForm" class="md-inline-form" novalidate>
+          <div class="form-wrapper md-whiteframe-1dp">
+            <div layout="column" layout-gt-sm="row">
+              <md-input-container  class="md-block" flex>
+                <label>Type</label>
+                <md-select name="tileType" ng-model="tile.type" required="true">
+                  <md-option ng-repeat="item in CommonUtil.TileTypes" ng-value="item">
+                    {{item}}
+                  </md-option>
+                </md-select>
+                <div ng-messages="editForm.tileType.$error" role="alert">
+                  <div ng-message="required"><span>Type field is required.</span></div>
+                </div>
+              </md-input-container>
+            </div>
+            <div ng-if="tile.type=='product'">
+              <div layout="column" layout-gt-sm="row" >
+                <md-autocomplete style="width:100%;margin-bottom:0;height:60px;margin-top:20px"
+                                 md-input-name="tileProductTitle"
+                                 md-selected-item="tile.object"
+                                 md-search-text="searchText"
+                                 md-items="item in searchProduct(searchText)"
+                                 md-item-text="item.title + '(' + item.productType.name + ')'"
+                                 md-floating-label="Product" required="true">
+                  <md-item-template>
+                    <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.title + ' (' + item.productType.name + ')'}}</span>
+                  </md-item-template>
+                  <div ng-messages="editForm.tileProductTitle.$error" ng-if="editForm.tileProductTitle.$touched">
+                    <div ng-message="required"><span>Product field is required.</span></div>
+                  </div>
+                </md-autocomplete>
+              </div>
+            </div>
+            <div layout="column" layout-gt-sm="row" ng-if="tile.type!='product'">
+              <md-input-container flex style="margin-top: 30px;">
+                <label>Title</label>
+                <input type="text" name="title" ng-model="tile.title">
+              </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row" ng-if="tile.type!='product'">
+              <md-input-container flex style="height:30px;">
+                <label>Blurb</label>
+                <textarea type="text" name="blurb" ng-model="tile.blurb"></textarea>
+              </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row" ng-if="tile.type=='image'">
+              <md-input-container flex class="upload-file-container">
+                <div>Image</div>
+                <div ng-hide="tile.object" ng-class="'divClass dropableArea'" style="height: 120px; max-width:300px;line-height: 1.5;" class="drop-container" drag-and-drop
+                     drop-handler="onFileUpload(files,'tileImage')">
+                  <div class="drop-informer" style="position: relative; top: 50%; margin-top: -19px;">
+                    Drop file here to upload.
+                  </div>
+                </div>
+                <div ng-show="tile.object">
+                  <img ng-src="{{CommonUtil.getSmallImage3(tile.object)}}" >
+                </div>
+                <div>
+                  <input type="file" name="tileImage" onchange="angular.element(this).scope().onFileUpload(this.files,'tileImage');" aria-label="tileImage" ng-show="false">
+                </div>
+                <div data-ng-show="isUploading" class="file-loading">
+                  <div style="margin-top: 70px;">
+                    <div class="file-progress">
+                      <div class="progress-bar-warning" style="width:{{fileProgress}}%;"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="control-button">
+                  <md-button class="md-raised md-primary" ng-click="openFile('tileImage')"> Upload </md-button>
+                  <md-button class="md-raised md-warn" ng-click="deleteFile('tileImage')" ng-disabled="!tile.object"> Delete </md-button>
+                </div>
+              </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row">
+              <div layout="row" flex="50">
+                <label>Color:</label>
+                <input
+                  minicolors="customSettings"
+                  type="text"
+                  ng-model="tile.color"
+                  style="color:{{tile.color}}"
+                >
+              </div>
+              <div layout="row" flex="50">
+                <label>Background Color:</label>
+                <input
+                  minicolors="customSettings"
+                  type="text"
+                  ng-model="tile.backgroundColor"
+                  style="color:{{tile.backgroundColor}}"
+                >
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <div flex="50">
+        <md-button class="md-warn" ng-click="delete($event)" ng-if="!createMode"> Delete </md-button>
+      </div>
+      <div flex="50">
+        <div layout="row" layout-align="end center">
+          <md-button ng-click="cancel()">Cancel</md-button>
+          <md-button ng-disabled="editForm.$invalid || editForm.$pristine" ng-click="save()">
+            Save
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-actions>
+</md-dialog>

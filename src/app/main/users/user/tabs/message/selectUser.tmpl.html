@@ -1,0 +1,62 @@
+<style>
+  md-input-container {
+    margin: 8px 0;
+  }
+
+  md-input-container.no-label label{
+    display:none
+   }
+
+  md-autocomplete md-input-container {
+    padding-bottom:10px !important;
+  }
+</style>
+<md-dialog aria-label="Select User"  ng-cloak style="width:800px;">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Select User</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="assets/angular-material-assets/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content" style="padding:0">
+        <form name="editForm" class="md-inline-form" novalidate>
+          <div class="form-wrapper md-whiteframe-1dp">
+            <div layout="column" layout-gt-sm="row">
+              <div layout="row" flex>
+                <md-autocomplete style="width:100%;margin-bottom:0;height:60px;"
+                                 md-input-name="username"
+                                 md-selected-item="userData"
+                                 md-search-text="searchText"
+                                 md-items="item in searchUser(searchText)"
+                                 md-item-text="item.username"
+                                 md-floating-label="User" required="true" md-selected-item-change="selectedUser()">
+                  <md-item-template>
+                    <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.username}}</span>
+                  </md-item-template>
+                  <div ng-messages="inputForm.username.$error" ng-if="inputForm.username.$touched">
+                    <div ng-message="required"><span>User field is required.</span></div>
+                  </div>
+                </md-autocomplete>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <div flex>
+        <div layout="row" layout-align="end center">
+          <md-button ng-click="cancel()">Cancel</md-button>
+          <md-button ng-disabled="editForm.$invalid || editForm.$pristine" ng-click="next()">
+            Next
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-actions>
+</md-dialog>

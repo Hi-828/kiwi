@@ -1,0 +1,131 @@
+<div id="broadcast-detail-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+        <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent" ><a href="/broadcast">Broadcasts</a></span>
+      </div>
+      <div class="title">{{createMode?'New Broadcast':'Edit Broadcast'}}</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+    <form name="inputForm" class="md-inline-form" novalidate>
+      <div layout="row">
+        <div>
+          <div class="md-title mb-10" layout="row" layout-align="end center">
+            <md-button class="md-raised md-primary" ng-click="createMode?save():update()" ng-disabled="inputForm.$invalid || inputForm.$pristine"> Save </md-button>
+            <md-button class="md-raised md-warn" ng-click="delete()" ng-if="!createMode"> Delete </md-button>
+            <md-button class="md-raised md-default" ng-click="cancel()"> Cancel </md-button>
+          </div>
+        </div>
+      </div>
+      <div class="white-bg md-whiteframe-4dp">
+        <div class="form-wrapper md-whiteframe-1dp">
+          <div layout="column" layout-gt-sm="row">
+            <div layout="row" flex>
+              <md-autocomplete style="width:80%;margin-bottom:0;"
+                md-input-name="userFullName"
+                md-selected-item="userData"
+                md-search-text="searchText"
+                md-items="item in searchUser(searchText)"
+                md-item-text="item.fullName"
+                md-floating-label="User" required="true">
+                <md-item-template>
+                  <span md-highlight-text="searchText" md-highlight-flags="^i">{{item.fullName}}</span>
+                </md-item-template>
+                <div ng-messages="inputForm.userFullName.$error" ng-if="inputForm.userFullName.$touched">
+                  <div ng-message="required"><span>User field is required.</span></div>
+                </div>
+              </md-autocomplete>
+            </div>
+            <md-input-container flex style="margin-bottom: 0;">
+              <label>Studio</label>
+              <input type="text" name="topic" ng-model="broadcast.studio">
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex style="margin-bottom: 0;margin-top:0">
+              <label>Topic</label>
+              <input type="text" name="topic" ng-model="broadcast.topic" required>
+              <div ng-messages="inputForm.topic.$error" role="alert">
+                <div ng-message="required"><span>Topic field is required.</span></div>
+              </div>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row" style="margin-bottom: 10px;margin-top:10px">
+            <div layout="row" flex>
+              <md-input-container flex style="margin-bottom: 0;margin-top:0">
+                <label>Start Time</label>
+                <input mdc-datetime-picker date="true" time="true" type="text" name="startTime" ng-model="startTime" required>
+                <div ng-messages="inputForm.startTime.$error" role="alert">
+                  <div ng-message="required"><span>Start Time field is required.</span></div>
+                </div>
+              </md-input-container>
+            </div>
+            <div layout="row" flex>
+              <md-input-container flex style="margin-bottom: 0;margin-top:0">
+                <label>End Time</label>
+                <input mdc-datetime-picker date="true" time="true" type="text" name="endTime" ng-model="endTime">
+              </md-input-container>
+            </div>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex style="margin-bottom: 0">
+              <label>Token Goal</label>
+              <input type="text" name="tokenGoal" ng-model="broadcast.tokenGoal">
+            </md-input-container>
+            <md-input-container flex style="margin-bottom: 0">
+              <label>Tokens Earned</label>
+              <input type="text" name="tokensEarned" ng-model="broadcast.tokensEarned">
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex style="margin-bottom: 0">
+              <label>Total Viewers</label>
+              <input type="text" name="totalViewers" ng-model="broadcast.totalViewers">
+            </md-input-container>
+            <md-input-container flex style="margin-bottom: 0">
+              <label>Current Viewers</label>
+              <input type="text" name="currentViewers" ng-model="broadcast.currentViewers">
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex style="margin-top: 0">
+              <md-switch ng-model="broadcast.privateEnabled">
+                Private Enabled
+              </md-switch>
+            </md-input-container>
+            <md-input-container flex style="margin-bottom: 0">
+              <label>Min Tokens For Private</label>
+              <input type="text" name="minTokensForPrivate" ng-model="broadcast.minTokensForPrivate">
+            </md-input-container>
+            <md-input-container flex style="margin-top: 0">
+              <md-switch ng-model="broadcast.allowObserversInPrivate">
+                Allow Observers In Private
+              </md-switch>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex style="margin-top: 0">
+              <md-switch ng-model="broadcast.groupsEnabled">
+                Groups Enabled
+              </md-switch>
+            </md-input-container>
+            <md-input-container flex style="margin-bottom: 0">
+              <label>Group Minimum</label>
+              <input type="text" name="groupMinimum" ng-model="broadcast.groupMinimum">
+            </md-input-container>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- / CONTENT -->
+
+</div>

@@ -1,0 +1,469 @@
+<div id="dashboard" class="page-layout simple right-sidenav" layout="row">
+
+  <!-- CENTER -->
+  <div class="center" flex ms-scroll>
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="column" layout-align="space-between">
+      <div layout="row" layout-align="space-between">
+        <div>
+          <span class="md-display-1 font-weight-300">Hello, {{vm.user.firstName}}</span>
+        </div>
+      </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <md-tabs md-dynamic-height>
+
+        <md-tab label="Home">
+
+          <!-- WIDGET GROUP -->
+          <div class="widget-group" layout="row" flex="100" layout-wrap>
+            <ms-widget layout="column" flex="100" flex-gt-xs="50" flex-gt-md="25">
+              <ms-widget-front class="white-bg">
+                <div class="pl-16 pr-8 pv-16 h-55" layout="row" layout-align="space-between center">
+                  <div class="h3">{{vm.widget1.title}}</div>
+                </div>
+                <div class="pt-8 pb-32" layout="column" layout-align="center center">
+                  <div class="blue-fg font-size-72 line-height-72">
+                    {{vm.widget1.data.count}}
+                  </div>
+                  <div class="h3 secondary-text font-weight-500">{{vm.widget1.data.label}}</div>
+                </div>
+                <div class="p-16 grey-50-bg border-top" layout="row" layout-align="start center">
+                  <span class="h4 secondary-text text-truncate">{{vm.widget1.data.extra.label}}:</span>
+                  <span class="h4 ml-8">{{vm.widget1.data.extra.count}}</span>
+                </div>
+              </ms-widget-front>
+            </ms-widget>
+            <ms-widget layout="column" flex="100" flex-gt-xs="50" flex-gt-md="25">
+              <ms-widget-front class="white-bg">
+                <div class="pl-16 pr-8 pv-16 h-55" layout="row" layout-align="space-between center">
+                  <div class="h3">{{vm.widget2.title}}</div>
+                </div>
+                <div class="pt-8 pb-32" layout="column" layout-align="center center">
+                  <div class="red-fg font-size-72 line-height-72">
+                    {{vm.widget2.data.count}}
+                  </div>
+                  <div class="h3 secondary-text font-weight-500">{{vm.widget2.data.label}}</div>
+                </div>
+                <div class="p-16 grey-50-bg border-top" layout="row" layout-align="start center">
+                  <span class="h4 secondary-text text-truncate">{{vm.widget2.data.extra.label}}:</span>
+                  <span class="h4 ml-8">{{vm.widget2.data.extra.count}}</span>
+                </div>
+              </ms-widget-front>
+            </ms-widget>
+            <ms-widget layout="column" flex="100" flex-gt-xs="50" flex-gt-md="25">
+              <ms-widget-front class="white-bg">
+                <div class="pl-16 pr-8 pv-16 h-55" layout="row" layout-align="space-between center">
+                  <div class="h3">{{vm.widget3.title}}</div>
+                </div>
+                <div class="pt-8 pb-32" layout="column" layout-align="center center">
+                  <div class="orange-fg font-size-72 line-height-72">
+                    {{vm.widget3.data.count}}
+                  </div>
+                  <div class="h3 secondary-text font-weight-500">{{vm.widget3.data.label}}</div>
+                </div>
+                <div class="p-16 grey-50-bg border-top" layout="row" layout-align="start center">
+                  <span class="h4 secondary-text text-truncate">{{vm.widget3.data.extra.label}}:</span>
+                  <span class="h4 ml-8">{{vm.widget3.data.extra.count}}</span>
+                </div>
+              </ms-widget-front>
+            </ms-widget>
+            <ms-widget layout="column" flex="100" flex-gt-xs="50" flex-gt-md="25">
+              <ms-widget-front class="white-bg">
+                <div class="pl-16 pr-8 pv-16 h-55" layout="row" layout-align="space-between center">
+                  <div class="h3">{{vm.widget4.title}}</div>
+                </div>
+                <div class="pt-8 pb-32" layout="column" layout-align="center center">
+                  <div class="blue-grey-fg font-size-72 line-height-72">
+                    {{vm.widget4.data.count}}
+                  </div>
+                  <div class="h3 secondary-text font-weight-500">{{vm.widget4.data.label}}</div>
+                </div>
+                <div class="p-16 grey-50-bg border-top" layout="row" layout-align="start center">
+                  <span class="h4 secondary-text text-truncate">{{vm.widget4.data.extra.label}}:</span>
+                  <span class="h4 ml-8">{{vm.widget4.data.extra.count}}</span>
+                </div>
+              </ms-widget-front>
+            </ms-widget>
+          </div>
+          <!-- / WIDGET GROUP -->
+
+          <!-- WIDGET GROUP -->
+          <div class="widget-group" layout="row" flex="100" layout-wrap>
+
+            <!-- WIDGET 5 -->
+            <ms-widget layout="row" flex="100">
+
+              <!-- Front -->
+              <ms-widget-front class="white-bg">
+                <div class="ph-16 pv-8 border-bottom" layout="row" layout-align="space-between center"
+                     layout-wrap>
+                  <div class="pv-8 h3">{{vm.widget5.title}}</div>
+
+                  <div class="pv-8" layout="row" layout-align="start center" layout-align-sm="end"
+                       flex-sm="100">
+                    <md-button class="ph-16"
+                               ng-repeat="(key, range) in vm.widget5.ranges"
+                               ng-click="vm.widget5.changeRange(key)"
+                               ng-disabled="vm.widget5.currentRange == key">
+                      {{range}}
+                    </md-button>
+                  </div>
+                </div>
+
+                <div layout="row" layout-align="start center" layout-wrap>
+                  <div class="p-16" layout="row" flex="100" flex-gt-sm="50">
+                    <nvd3 class="h-420 remove-x-lines"
+                          config="vm.widget5.mainChart.config"
+                          options="vm.widget5.mainChart.options"
+                          data="vm.widget5.mainChart.data"></nvd3>
+                  </div>
+
+                  <div class="p-16" layout="row" flex="100" flex-gt-sm="50" layout-wrap>
+                    <div class="p-16" layout="column" flex="100" flex-gt-xs="50"
+                         layout-align="center"
+                         ng-repeat="(name, widget) in vm.widget5.supporting.widgets">
+                      <div class="h4 secondary-text">{{widget.data.label}}</div>
+                      <div class="md-display-1">
+                        {{widget.data.count[vm.widget5.currentRange]}}
+                      </div>
+                      <nvd3 class="h-50"
+                            config="vm.widget5.supporting.chart.config"
+                            options="vm.widget5.supporting.chart.options"
+                            data="widget.chart.data"></nvd3>
+                    </div>
+                  </div>
+                </div>
+              </ms-widget-front>
+              <!-- / Front -->
+
+            </ms-widget>
+            <!-- / WIDGET 5 -->
+
+          </div>
+          <!-- / WIDGET GROUP -->
+
+
+          <!-- WIDGET GROUP -->
+          <div class="widget-group" layout="row" flex="100" layout-wrap>
+
+            <!-- WIDGET 6 -->
+            <ms-widget layout="column" flex="100" flex-gt-sm="50">
+
+              <!-- Front -->
+              <ms-widget-front class="white-bg">
+
+                <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                  <div class="h3">{{vm.widget6.title}}</div>
+                  <div class="pv-16">
+                    <md-select class="simplified" ng-model="vm.widget6.currentRange"
+                               ng-change="vm.widget6.changeRange(vm.widget6.currentRange)"
+                               aria-label="Change range">
+                      <md-option ng-repeat="(key, range) in vm.widget6.ranges"
+                                 value="{{key}}">
+                        {{range}}
+                      </md-option>
+                    </md-select>
+                  </div>
+                </div>
+
+                <div class="p-16">
+                  <nvd3 class="h-400"
+                        config="vm.widget6.mainChart.config"
+                        options="vm.widget6.mainChart.options"
+                        data="vm.widget6.mainChart.data"></nvd3>
+                </div>
+
+                <div class="pv-8 mh-16 border-top" layout="row" layout-align="start center" layout-wrap>
+                  <div class="pv-8 border-right" layout="column" layout-align="center center"
+                       flex="100" flex-gt-xs="50">
+                    <span class="font-size-32">{{vm.widget6.footerLeft.count[vm.widget6.currentRange]}}</span>
+                    <span class="h4">{{vm.widget6.footerLeft.title}}</span>
+                  </div>
+
+                  <div class="pv-8" layout="column" layout-align="center center" flex="100"
+                       flex-gt-xs="50">
+                    <span class="font-size-32">{{vm.widget6.footerRight.count[vm.widget6.currentRange]}}</span>
+                    <span class="h4">{{vm.widget6.footerRight.title}}</span>
+                  </div>
+                </div>
+
+              </ms-widget-front>
+              <!-- / Front -->
+
+            </ms-widget>
+            <!-- / WIDGET 6 -->
+
+            <!-- WIDGET 7 -->
+            <ms-widget layout="column" flex="100" flex-gt-sm="50">
+
+              <!-- Front -->
+              <ms-widget-front class="white-bg">
+
+                <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                  <div class="h3">{{vm.widget7.title}}</div>
+
+                  <div class="pv-16">
+                    <md-select class="simplified" ng-model="vm.widget7.currentRange"
+                               aria-label="Change range">
+                      <md-option ng-repeat="(key, range) in vm.widget7.ranges"
+                                 value="{{key}}">
+                        {{range}}
+                      </md-option>
+                    </md-select>
+                  </div>
+                </div>
+
+                <div class="p-16" layout="row" layout-align="space-between center"
+                     ng-repeat="event in vm.widget7.schedule[vm.widget7.currentRange]">
+                  <div>
+                    <div class="h3">{{event.title}}</div>
+                    <div>
+                      <span class="secondary-text">{{event.time}}</span>
+                      <span ng-if="event.location">, {{event.location}}</span>
+                    </div>
+                  </div>
+
+                  <md-button class="md-icon-button" aria-label="More information">
+                    <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+                  </md-button>
+                </div>
+
+              </ms-widget-front>
+              <!-- / Front -->
+
+            </ms-widget>
+            <!-- / WIDGET 7 -->
+
+          </div>
+          <!-- / WIDGET GROUP -->
+
+        </md-tab>
+
+        <md-tab label="Budget Summary">
+
+          <!-- WIDGET GROUP -->
+          <div class="widget-group" layout="row" flex="100" layout-wrap>
+
+            <!-- WIDGET 8 -->
+            <ms-widget layout="column" flex="100" flex-gt-sm="50">
+
+              <!-- Front -->
+              <ms-widget-front class="white-bg">
+                <div class="h3 p-16">
+                  {{vm.widget8.title}}
+                </div>
+
+                <md-divider></md-divider>
+
+                <div class="p-16">
+                  <nvd3 class="h-400"
+                        options="vm.widget8.mainChart.options"
+                        data="vm.widget8.mainChart.data"></nvd3>
+                </div>
+
+              </ms-widget-front>
+              <!-- / Front -->
+
+            </ms-widget>
+            <!-- / WIDGET 8 -->
+
+            <!-- WIDGET 9 -->
+            <ms-widget layout="column" flex="100" flex-gt-sm="50">
+
+              <!-- Front -->
+              <ms-widget-front class="white-bg">
+                <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                  <div class="h3">{{vm.widget9.title}}</div>
+
+                  <div class="pv-16">
+                    <md-select class="simplified" ng-model="vm.widget9.currentRange"
+                               ng-change="vm.widget9.changeRange(vm.widget9.currentRange)"
+                               aria-label="Change range">
+                      <md-option ng-repeat="(key, range) in vm.widget6.ranges"
+                                 value="{{key}}">
+                        {{range}}
+                      </md-option>
+                    </md-select>
+                  </div>
+                </div>
+
+                <div class="p-16" layout="column" layout-align="center" layout-gt-xs="row"
+                     layout-align-gt-xs="space-between center">
+                  <div class="p-8">
+                    <div class="h4 secondary-text">{{vm.widget9.weeklySpent.title}}</div>
+                    <div class="pt-8 md-display-1 font-weight-300">
+                      <span class="secondary-text">$</span><span>{{vm.widget9.weeklySpent.count[vm.widget9.currentRange]}}</span>
+                    </div>
+                  </div>
+                  <div class="p-8" flex>
+                    <nvd3 class="h-50"
+                          config="vm.widget9.chart.config"
+                          options="vm.widget9.chart.options"
+                          data="vm.widget9.weeklySpent.chartData"></nvd3>
+                  </div>
+                </div>
+
+                <div class="p-16" layout="column" layout-align="center" layout-gt-xs="row"
+                     layout-align-gt-xs="space-between center">
+                  <div class="p-8">
+                    <div class="h4 secondary-text">{{vm.widget9.totalSpent.title}}</div>
+                    <div class="pt-8 md-display-1 font-weight-300">
+                      <span class="secondary-text">$</span><span>{{vm.widget9.totalSpent.count[vm.widget9.currentRange]}}</span>
+                    </div>
+                  </div>
+                  <div class="p-8" flex>
+                    <nvd3 class="h-50"
+                          config="vm.widget9.chart.config"
+                          options="vm.widget9.chart.options"
+                          data="vm.widget9.totalSpent.chartData"></nvd3>
+                  </div>
+                </div>
+
+                <div class="p-16" layout="column" layout-align="center" layout-gt-xs="row"
+                     layout-align-gt-xs="space-between center">
+                  <div class="p-8">
+                    <div class="h4 secondary-text">{{vm.widget9.remaining.title}}</div>
+                    <div class="pt-8 md-display-1 font-weight-300">
+                      <span class="secondary-text">$</span><span>{{vm.widget9.remaining.count[vm.widget9.currentRange]}}</span>
+                    </div>
+                  </div>
+                  <div class="p-8" flex>
+                    <nvd3 class="h-50"
+                          config="vm.widget9.chart.config"
+                          options="vm.widget9.chart.options"
+                          data="vm.widget9.remaining.chartData"></nvd3>
+                  </div>
+                </div>
+
+                <div class="pv-24 mh-24 border-top">
+                  <div class="h4 secondary-text">{{vm.widget9.totalBudget.title}}</div>
+                  <div class="pt-8 md-display-1 font-weight-300">
+                    <span class="secondary-text">$</span><span>{{vm.widget9.totalBudget.count}}</span>
+                  </div>
+                </div>
+
+              </ms-widget-front>
+              <!-- / Front -->
+
+            </ms-widget>
+            <!-- / WIDGET 9 -->
+
+          </div>
+          <!-- / WIDGET GROUP -->
+
+
+          <!-- WIDGET GROUP -->
+          <div class="widget-group" layout="row" flex="100" layout-wrap>
+
+            <!-- WIDGET 10 -->
+            <ms-widget layout="row" flex="100">
+
+              <!-- Front -->
+              <ms-widget-front class="white-bg">
+
+                <div class="simple-table-container" ms-responsive-table>
+                  <div class=" table-title">
+                    {{vm.widget10.title}}
+                  </div>
+
+                  <table class="simple">
+                    <thead>
+                    <tr>
+                      <th ng-repeat="column in vm.widget10.table.columns">
+                        {{column.title}}
+                      </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr ng-repeat="row in vm.widget10.table.rows">
+                      <td ng-repeat="cell in row">
+                                                    <span class="{{cell.classes}}">
+                                                        {{cell.value}}
+                                                    </span>
+                        <i ng-if="cell.icon" class="icon {{cell.icon}}"></i>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </ms-widget-front>
+              <!-- / Front -->
+
+            </ms-widget>
+            <!-- / WIDGET 10 -->
+
+          </div>
+          <!-- / WIDGET GROUP -->
+
+        </md-tab>
+
+        <md-tab label="Team Members">
+
+          <!-- WIDGET GROUP -->
+          <div class="widget-group" layout="row" flex="100" layout-wrap>
+
+            <!-- WIDGET 11 -->
+            <ms-widget layout="row" flex="100">
+
+              <!-- Front -->
+              <ms-widget-front class="white-bg">
+
+                <div class="p-24 mb-8 border-bottom" layout="row" layout-align="space-between center">
+                  <div class="h2">{{vm.widget11.title}}</div>
+                  <div class="text-boxed red-bg white-fg m-0">{{vm.widget11.table.rows.length}}
+                    members
+                  </div>
+                </div>
+
+                <table class="dataTable row-border hover" datatable="ng"
+                       dt-options="vm.widget11.dtOptions">
+                  <thead>
+                  <tr>
+                    <th class="secondary-text"
+                        ng-repeat="column in ::vm.widget11.table.columns">
+                      <div class="table-header">
+                        <span class="column-title">{{column.title}}</span>
+                      </div>
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="row in ::vm.widget11.table.rows">
+                    <td ng-repeat="cell in row">
+                      <img class="avatar" ng-if="$index === 0"
+                           ng-src="assets/images/avatars/{{cell}}">
+                                                <span ng-if="$index != 0">
+                                                    {{cell}}
+                                                </span>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+
+              </ms-widget-front>
+              <!-- / Front -->
+
+            </ms-widget>
+            <!-- / WIDGET 11 -->
+
+          </div>
+          <!-- / WIDGET GROUP -->
+
+        </md-tab>
+      </md-tabs>
+
+    </div>
+    <!-- / CONTENT -->
+
+  </div>
+  <!-- / CENTER -->
+
+</div>

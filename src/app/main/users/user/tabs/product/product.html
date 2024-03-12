@@ -1,0 +1,34 @@
+<div class="md-title mb-10">
+  <md-button class="md-raised md-primary" ng-click="createProduct($event, item)"> {{item.name=='Video'?'Add Video':'Add Product'}} </md-button>
+</div>
+<div class="simple-table-container md-whiteframe-4dp">
+  <md-table-container>
+    <table md-table md-progress="promise[item._id]" class="hover">
+      <thead md-head>
+      <tr md-row>
+        <th md-column style="text-align:center">Image/Thumbnail</th>
+        <th md-column>Title</th>
+        <th md-column style="text-align:center">Token Cost</th>
+        <th md-column style="text-align:center">Views</th>
+        <th md-column style="text-align:center">Likes</th>
+        <th md-column style="text-align:center">Downloads</th>
+        <th md-column style="text-align:center">Purchases</th>
+        <th md-column style="text-align:center">Avg.Rating</th>
+      </tr>
+      </thead>
+      <tbody md-body>
+      <tr class="table-row" md-row md-auto-select ng-repeat="prod in products[item._id]" ng-click="editProduct($event, item, prod)">
+        <td md-cell style="text-align:center"><div class="thumb-cover"><img class="thumb" ng-src="{{CommonUtil.getSmallImage2(prod.coverPhoto._file)}}"></div></td>
+        <td md-cell>{{prod.title}}</td>
+        <td md-cell style="text-align:center">{{prod.tokenCost}}</td>
+        <td md-cell style="text-align:center">{{prod.numViews}}</td>
+        <td md-cell style="text-align:center">{{prod.numLikes}}</td>
+        <td md-cell style="text-align:center">{{prod.numDownloads}}</td>
+        <td md-cell style="text-align:center">{{prod.purchases?prod.purchases:0}}</td>
+        <td md-cell style="text-align:center">{{prod.avgRating}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+  <md-table-pagination md-limit="query[item._id].limit" md-page="query[item._id].page" md-total="{{totalProductCount[item._id]}}" md-on-paginate="onPaginate" md-page-select></md-table-pagination>
+</div>

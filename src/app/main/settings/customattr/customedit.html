@@ -1,0 +1,110 @@
+<div id="userlist-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+        <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent"><a href="/customattr">User Attributes</a></span>
+      </div>
+      <div class="title">{{createMode?'New':'Edit'}} User Attribute</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+    <form name="inputForm" class="md-inline-form" novalidate>
+      <div layout="row">
+        <div flex="50" class="md-title">
+          <md-switch ng-model="meta.enabled">
+            {{meta.enabled?'Enabled':'Disabled'}}
+          </md-switch>
+        </div>
+        <div flex="50">
+          <div class="md-title mb-10" layout="row" layout-align="end center">
+            <md-button class="md-raised md-warn" ng-click="delete()" ng-if="!createMode"> Delete </md-button>
+            <md-button class="md-raised md-primary" ng-click="createMode?save():update()" ng-disabled="inputForm.$invalid || inputForm.$pristine"> Save </md-button>
+          </div>
+        </div>
+      </div>
+      <div class="white-bg md-whiteframe-4dp">
+        <div class="form-wrapper md-whiteframe-1dp">
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <label>Label</label>
+              <input type="text" name="label" ng-model="meta.label"  required>
+              <div ng-messages="inputForm.label.$error" role="alert">
+                <div ng-message="required"><span>Label field is required.</span></div>
+              </div>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <label>Name</label>
+              <input type="text" name="name" ng-model="meta.name" required ng-disabled="!createMode">
+              <div ng-messages="inputForm.name.$error" role="alert">
+                <div ng-message="required"><span>Name field is required.</span></div>
+              </div>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <label>Hint</label>
+              <input type="text" name="hint" ng-model="meta.hint">
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <label>Type</label>
+              <md-select name="attrTypeValue" ng-model="attrType" required>
+                <md-option ng-repeat="item in attrTypes" value="{{item}}">
+                  {{item}}
+                </md-option>
+              </md-select>
+              <div ng-messages="inputForm.attrTypeValue.$error" role="alert">
+                <div ng-message="required"><span>Type field is required.</span></div>
+              </div>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-xs="row" ng-if="attrType=='Select' || attrType=='Multi-Select' || attrType=='Radio-Select'">
+            <md-input-container flex>
+              <label>Options</label>
+              <div layout="column" layout-gt-sm="row" ng-repeat="item in options" style="margin-left:150px">
+                <md-input-container flex>
+                  <label>Option Label</label>
+                  <input type="text" ng-model="item.label" style="color:black !important" ng-change="changeOption(item)">
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Option Value</label>
+                  <input type="text" ng-model="item.value" style="color:black !important" ng-change="changeOption(item)">
+                </md-input-container>
+              </div>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-xs="row" ng-if="attrType=='Checkbox-Select'">
+            <md-input-container flex>
+              <label>CheckBoxes</label>
+              <div layout="column" layout-gt-sm="row" ng-repeat="item in options" style="margin-left:150px">
+                <md-input-container flex>
+                  <label>Label</label>
+                  <input type="text" ng-model="item.label" style="color:black !important" ng-change="changeOption2(item)">
+                </md-input-container>
+              </div>
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <md-checkbox ng-model="meta.searchable" style="margin:0">
+                Searchable
+              </md-checkbox>
+            </md-input-container>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- / CONTENT -->
+
+</div>

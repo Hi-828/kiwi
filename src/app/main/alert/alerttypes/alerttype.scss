@@ -1,0 +1,26 @@
+#alerttype-page {
+
+    #widgets {
+
+        .ms-card {
+            padding: 12px;
+        }
+    }
+  .float-row {
+  }
+
+  .float-row .float-col:first-child {
+    padding-left: 24px;
+  }
+
+  .float-row .float-col {
+    padding: 16px 8px;
+    width:50%;float:left;
+    background-color: lightgrey !important;
+  }
+
+  .float-row .float-col:last-child {
+    padding-right: 24px;
+  }
+
+}

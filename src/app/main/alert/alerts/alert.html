@@ -1,0 +1,76 @@
+<div id="alert-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+      </div>
+      <div class="title">Alerts List</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="md-title mb-10">
+      <div layout="column" layout-gt-sm="row">
+        <div flex="60" style="font-size:16px">
+          <div style="padding-top:20px;">
+            <md-radio-group ng-model="alertFilter" ng-change="saveUserPreference()">
+              <md-radio-button style="margin:0;float:left;padding-right:20px;" value="0">All</md-radio-button>
+              <md-radio-button style="margin:0;float:left;padding-right:20px;" value="1">Pending Review</md-radio-button>
+              <md-radio-button style="margin:0;float:left;" value="2">Reviewed</md-radio-button>
+            </md-radio-group>
+          </div>
+        </div>
+        <div flex>
+          <md-button class="md-raised md-primary" ng-click="createAlert()" style="float:right"> Add Alert </md-button>
+        </div>
+      </div>
+    </div>
+    <div></div>
+    <div class="simple-table-container md-whiteframe-4dp">
+      <table class="simple hover" ms-responsive-table id="myTable">
+        <thead>
+        <tr>
+          <th>User Avatar</th>
+          <th>Reported By</th>
+          <th>Regarding</th>
+          <th>Type</th>
+          <th>Comment</th>
+          <th style="text-align:center;">Priority</th>
+          <th style="text-align:center;">Status</th>
+          <th style="text-align:center;">Date/Time</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          <tr ng-repeat="item in alertList|filter:checkFilter" ng-click="editAlert(item)" class="table-row">
+            <td style="padding:0 0 0 24px;"><div class="thumb-cover"><img class="thumb" ng-src="{{CommonUtil.getAvatarThumbnail(item.user.avatar)}}" title="No Image"></div></td>
+            <td >{{item.user.firstName + " " + item.user.lastName}}<br><br>{{item.user.username}}</td>
+            <td >
+              <a href="" ng-click="goUserProfile(item.refUser, $event)">{{item.refUser.username}}</a><br><br>
+              <a href="" ng-click="goBroadcast(item.refBroadcast, $event);">{{item.refBroadcast.topic}}</a>
+            </td>
+            <td >{{item.type?item.type.name:"Other"}}</td>
+            <td ><div style="overflow: hidden;text-overflow: ellipsis;-o-text-overflow: ellipsis;white-space: nowrap;max-width: 200px;">{{item.comment}}</div></td>
+            <td  style="text-align:center;">{{item.type.priority}}</td>
+            <td style="text-align:center">{{item.reviewed?'Reviewed':'Pending'}}</td>
+            <td style="text-align:center">{{CommonUtil.formatDateWithFormat(item._bmd.createdAt, "L hh:mm")}}</td>
+          </tr>
+          <tr ng-if="NoData()">
+            <td colspan="7" class="text-center">There is no alert.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div data-ng-show="loadingPage" layout="row" layout-sm="column" layout-align="space-around" style="position: absolute;top: 0;left: 0;width: 100%;height:100%;background: rgba(0,0,0,0.2);z-index:1000;">
+      <div layout="row" layout-align="center center">
+        <md-progress-circular class="md-accent md-hue-1" md-mode="indeterminate" md-diameter="96"></md-progress-circular>
+      </div>
+    </div>
+  </div>
+  <!-- / CONTENT -->
+</div>

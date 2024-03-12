@@ -1,0 +1,283 @@
+<form name="userForm" class="md-inline-form" novalidate>
+  <div layout="row">
+    <div flex="50" class="md-title">
+      <md-switch ng-model="isEnabled">
+        {{!isEnabled?'Disabled':'Enabled'}}
+      </md-switch>
+      <md-switch ng-model="user.verified">
+        {{user.verified?'Email Verified':'Email Not Verified'}}
+      </md-switch>
+      <md-switch ng-model="user.featured">
+        {{user.featured?'Featured':'Not featured'}}
+      </md-switch>
+    </div>
+    <div flex="50">
+      <div class="md-title mb-10" layout="row" layout-align="end center">
+        <md-button class="md-raised md-warn" ng-click="delete()" ng-if="!user.deleted"> Delete </md-button>
+        <md-button class="md-raised md-warn" ng-click="undelete()" ng-if="user.deleted"> Undelete </md-button>
+        <md-button class="md-raised md-primary" ng-click="openPasswordDialog($event)"> Change Password </md-button>
+        <md-button class="md-raised md-primary" ng-click="update()" ng-disabled="userForm.$invalid || userForm.$pristine"> Save </md-button>
+      </div>
+    </div>
+  </div>
+  <div class="white-bg md-whiteframe-4dp">
+    <div class="form-wrapper md-whiteframe-1dp">
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container style="width:160px;margin:0">
+          <div layout="column" layout-gt-xs="row">
+            <md-input-container flex style="position:relative;margin:0">
+              <div ng-hide="avatarFile" ng-class="'divClass dropableArea'" style="opacity:0.5;height: 120px;width:120px; line-height: 1.5;padding:10px;background:url('assets/images/avatars/profile-120x120.jpg') " class="drop-container" drag-and-drop
+                   drop-handler="onFileUpload(files,'avatar', 'avatar');" ng-click="openAvatarFile($event)">
+                <div class="drop-informer" style="position: relative; top: 50%; margin-top: -19px;">
+                  Drag & drop avatar image
+                </div>
+              </div>
+              <div class="thumbnail" ng-show="avatarFile">
+                <a href="{{CommonUtil.getDownloadURL(avatarFile)}}" target="_blank">
+                  <img ng-src="{{CommonUtil.getAvatarThumbnail(avatarFile)}}" class="avatar-img" ng-mouseover="showHideAvartarControl(true)" ng-disabled="isUploading['avatar']">
+                </a>
+              </div>
+              <div>
+                <input type="file" name="avatarFile" onchange="angular.element(this).scope().onFileUpload(this.files,'avatar', 'avatar');" ng-show="false">
+              </div>
+              <!--<div style="width:120px;text-align:center;padding-top:50px;">
+                <span ng-if="user.verified" style="color:green">Verified</span>
+                <span ng-if="!user.verified" style="color:red">Not Verified</span>
+              </div>-->
+              <div data-ng-show="isUploading['avatar']" style="width: 120px; height: 100%; position: absolute; top:0; left:0; background-color:rgba(255,255,255,0.4);text-align: center;">
+                <div style="margin-top: 50px;">
+                  <div class="file-progress" style="margin-left:3%">
+                    <div class="progress-bar-warning" style="width:{{fileProgress['avatar']}}%;"></div>
+                  </div>
+                </div>
+              </div>
+              <div style="position: absolute;top: 122px;left: 10px;" ng-show="avatarFile">
+                <!--<md-button class="md-raised md-primary" ng-click="openAvatarFile()"> Change </md-button>-->
+                <md-button class="md-raised md-warn" ng-click="deleteFile('avatar')"> Delete </md-button>
+              </div>
+            </md-input-container>
+          </div>
+        </md-input-container>
+        <div flex>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <input type="text" name="firstname" ng-model="user.firstName" placeholder="First Name">
+            </md-input-container>
+
+            <md-input-container flex>
+              <input type="text" name="lastname" ng-model="user.lastName" placeholder="Last Name">
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <input type="text" name="moderMaidenName" ng-model="user.mothersMaidenName" placeholder="Mother's Maiden Name">
+            </md-input-container>
+
+            <md-input-container flex>
+              <input type="text" name="middleName" ng-model="user.middleName" placeholder="Middle Name/Middle Initial">
+            </md-input-container>
+          </div>
+          <div layout="column" layout-gt-sm="row">
+            <md-input-container flex>
+              <input type="text" name="username" ng-model="user.username" placeholder="Username" required ng-change="userNameCheck()">
+              <div ng-messages="userForm.username.$error" role="alert">
+                <div ng-message="required"><span>Username field is required.</span></div>
+                <div ng-message="namecheck"><span>This username is used already</span></div>
+              </div>
+            </md-input-container>
+
+            <md-input-container flex>
+              <input type="email" name="email" ng-model="user.email" placeholder="Email" required>
+              <div ng-messages="userForm.email.$error" role="alert">
+                <div ng-message="required"><span>Email field is required.</span></div>
+                <div ng-message="email"><span>Email field must be valid.</span></div>
+              </div>
+            </md-input-container>
+          </div>
+        </div>
+      </div>
+
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container  class="md-block" flex>
+          <label>Phone Number</label>
+          <input type="text" name="phoneNumber" ng-model="user.phoneNumber">  <!-- ng-pattern="/^\+?\d{2,5}[- ]?\d{2,5}[- ]?\d{2,5}$/" -->
+        </md-input-container>
+
+        <md-input-container  class="md-block" flex>
+          <label>Gender</label>
+          <md-select ng-model="user.gender">
+            <md-option ng-repeat="gender in CommonUtil.genders" value="{{gender}}">
+              {{gender}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <!--<sm-date-time-picker
+          lable="Date of Birth"
+          value="dateOfBirth"
+          flex
+          close-on-select="true"
+          format="LL"
+          week-start-day="Monday">
+        </sm-date-time-picker>-->
+        <md-datepicker ng-model="dateOfBirth" md-placeholder="Date of Birth" style="margin-right:-16px;"></md-datepicker>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex>
+          <label>Oneliner</label>
+          <input name="oneliner" ng-model="user.oneliner"></input>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex>
+          <textarea name="bio" ng-model="user.bio" md-select-on-focus placeholder="Bio"></textarea>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex>
+          <label>Address1</label>
+          <input type="text" name="address1" ng-model="user.address1">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Address2</label>
+          <input type="text" name="address2" ng-model="user.address2">
+        </md-input-container>
+      </div>
+
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex="20">
+          <label>City</label>
+          <input type="text" name="city" ng-model="user.city">
+        </md-input-container>
+
+        <md-input-container flex="20">
+          <label>State</label>
+          <input type="text" name="state" ng-model="user.state">
+        </md-input-container>
+        <md-input-container flex="15">
+          <label>Postal Code</label>
+          <input name="postalcode" ng-model="user.postalCode" > <!--ng-pattern="/^[0-9]{4,8}$/"-->
+        </md-input-container>
+        <md-input-container flex="45">
+          <label>Country</label>
+          <md-select ng-model="user.country">
+            <md-option ng-repeat="country in CommonUtil.AllCountries" value="{{country.code}}">
+              {{country.name}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex>
+          <div>User Links</div>
+          <div layout="column" layout-gt-sm="row" ng-repeat="item in userLinks" style="margin-left:50px">
+            <md-input-container flex>
+              <label>Title</label>
+              <input type="text" ng-model="item.title" style="color:black !important" ng-change="changeUserLink(item)">
+            </md-input-container>
+            <md-input-container flex>
+              <label>URL</label>
+              <input type="url" name="{{'url'+ item.$$hashKey}}" ng-model="item.url" style="color:black !important" ng-change="changeUserLink(item)">
+              <div ng-messages="userForm['url'+ item.$$hashKey].$error" role="alert">
+                <div ng-message="url">
+                  <span>Wrong URL Format</span>
+                </div>
+              </div>
+            </md-input-container>
+          </div>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row">
+        <md-input-container flex>
+          <div>Agent Info</div>
+          <div layout="column" layout-gt-sm="row" style="margin-left:50px">
+            <md-input-container flex>
+              <md-switch ng-model="user.agent">
+                {{user.agent?'User is an agent':'User is not an agent'}}
+              </md-switch>
+            </md-input-container>
+            <md-input-container flex class="md-block" ng-if="user.agent" style="margin-top:28px">
+              <label>Agent Code</label>
+              <input type="text" style="color:black !important" ng-model="user.agentCode">
+            </md-input-container>
+            <md-input-container flex class="md-block" ng-if="!user.agent" style="margin-top:28px">
+              <label>Referred By</label>
+              <input type="text" style="color:black !important" ng-model="user.referredBy">
+            </md-input-container>
+          </div>
+        </md-input-container>
+      </div>
+      <!--<div layout="column" layout-gt-xs="row">
+
+          <md-input-container flex style="margin-top:0">
+            <md-checkbox ng-model="user.verified">Email Verified</md-checkbox>
+          </md-input-container>
+      </div>-->
+      <div layout="column" layout-gt-sm="row">
+        <md-input-container flex style="margin-bottom: 20px;font-size:18px;border-bottom: 1px solid #e1e1e1">
+          <strong>User Attributes</strong>
+        </md-input-container>
+      </div>
+      <div layout="column" layout-gt-xs="row" ng-repeat="field in userAttrList">
+        <md-input-container flex ng-if="field.type==0" style="margin-bottom:10px">
+          <label>{{field.label}}</label>
+          <input type="text" name="{{field.name}}" ng-model="user[field.name]" placeholder="{{field.hint}}" >
+        </md-input-container>
+        <md-input-container flex ng-if="field.type==1" style="margin-bottom:10px">
+          <label>{{field.label}}</label>
+          <textarea name="{{field.name}}" ng-model="user[field.name]" rows="5" md-select-on-focus placeholder="{{field.hint}}"></textarea>
+        </md-input-container>
+        <md-input-container flex ng-if="field.type==2" style="margin-bottom:28px">
+          <div class="label-header">{{field.label}}</div>
+          <md-select ng-model="user[field.name]" placeholder="{{field.hint}}" >
+            <md-option ng-repeat="item in field.options" value="{{item.value}}">
+              {{item.label}}
+            </md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container flex ng-if="field.type==3" style="margin-bottom:10px">
+          <div class="label-header">{{field.label}}</div>
+          <multiple-autocomplete name="{{'customField_' + field.name}}" placeholder="No Selection" ng-model="selectedListMap[field.name]" object-property="title" suggestions-arr="field.options" ng-click="setTextFocus('customField_' + field.name)">
+          </multiple-autocomplete>
+        </md-input-container>
+        <md-input-container flex ng-if="field.type==4" style="margin-bottom:10px">
+          <label>{{field.label}}</label>
+          <input type="text" name="{{field.name}}" ng-model="user[field.name]" ng-pattern="/^[0-9]{1,6}$/">
+          <div ng-messages="userForm[field.name].$error" role="alert" multiple>
+            <div ng-message="pattern">
+              <span>Field must be a valid number</span>
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container flex ng-if="field.type==5" style="margin-bottom:10px">
+          <label>{{field.label}}</label>
+          <input type="text" name="{{field.name}}" ng-model="user[field.name]" ng-pattern="/^[0-9]+([,.][0-9]+)?$/">
+          <div ng-messages="userForm[field.name].$error" role="alert" multiple>
+            <div ng-message="pattern">
+              <span>Field must be a valid decimal</span>
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container flex ng-if="field.type==6" style="margin:10px 0 20px 0">
+          <md-checkbox ng-model="user[field.name]" style="margin:0">
+            {{field.label}}
+          </md-checkbox>
+        </md-input-container>
+        <md-input-container flex ng-if="field.type==7" style="margin-bottom:10px">
+          <div class="label-header">{{field.label}}</div>
+          <md-radio-group ng-model="user[field.name]">
+            <md-radio-button value="{{item.value}}" ng-repeat="item in field.options">{{item.label}}</md-radio-button>
+          </md-radio-group>
+        </md-input-container>
+        <md-input-container flex ng-if="field.type==8" style="margin-bottom:10px">
+          <div class="label-header" style="margin-bottom:5px">{{field.label}}</div>
+          <md-checkbox ng-model="user[field.name][item]" ng-repeat="item in field.options" style="margin:0 20px 0 0">
+            {{item}}
+          </md-checkbox>
+        </md-input-container>
+      </div>
+    </div>
+  </div>
+</form>
+<div data-ng-show="isUpdatePage" layout="row" layout-sm="column" layout-align="space-around" style="position:absolute;top:0;width:100%;height:100%;background: rgba(0,0,0,0.2);margin-left:-16px;">
+  <md-progress-circular class="md-accent md-hue-1" md-mode="indeterminate" md-diameter="96" style="margin-top:200px;"></md-progress-circular>
+</div>

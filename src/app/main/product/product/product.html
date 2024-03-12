@@ -1,0 +1,64 @@
+<div id="product-page" class="page-layout simple fullwidth doc-page element-doc-page">
+
+  <!-- HEADER -->
+  <div class="header md-accent-bg" layout="row" layout-align="space-between">
+    <div layout="column" layout-align="center start">
+      <div class="breadcrumb" layout="row" layout-align="start center">
+        <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+        <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+        <span class="parent">Products</span>
+      </div>
+      <div class="title">Products</div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+    <div class="md-title mb-10">
+      <md-button class="md-raised md-primary" ng-click="create($event)"> Add Product </md-button>
+    </div>
+    <div class="simple-table-container md-whiteframe-4dp">
+      <table class="simple hover" ms-responsive-table>
+        <thead>
+        <tr>
+          <th>User</th>
+          <th>Product Type</th>
+          <th>Title</th>
+          <th>Subtitle</th>
+          <th>Views</th>
+          <th>Likes</th>
+          <th>Downloads</th>
+          <th>Rating</th>
+          <th>Collaboration </th>
+          <th>Token Cost</th>
+          <th>Downloadable</th>
+          <th>Enabled</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          <tr ng-repeat="item in products" ng-click="edit(item)" class="table-row">
+            <td >{{item.user.firstName + " " + item.user.lastName}}</td>
+            <td >{{item.productType.name}}</td>
+            <td >{{item.title}}</td>
+            <td >{{item.subtitle}}</td>
+            <td >{{item.numViews}}</td>
+            <td >{{item.numLikes}}</td>
+            <td >{{item.numDownloads}}</td>
+            <td >{{item.avgRating}}</td>
+            <td >{{item.collaboration}}</td>
+            <td >{{item.tokenCost}}</td>
+            <td >{{item.downloadable}}</td>
+            <td >{{item.enabled}}</td>
+          </tr>
+          <tr ng-if="NoData()">
+            <td colspan="6" class="text-center">There is no product.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- / CONTENT -->
+
+</div>

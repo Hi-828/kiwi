@@ -1,0 +1,25 @@
+<div class="md-title mb-10">
+  <md-button class="md-raised md-primary" ng-click="createStudio($event)"> Add Studio </md-button>
+</div>
+<div class="simple-table-container md-whiteframe-4dp">
+  <table class="simple hover" ms-responsive-table>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th style="text-align: center">Enabled</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in studios" ng-click="editStudio($event, item)" class="table-row {{studio._id==item._id?'selected':''}}">
+      <td >{{item.name}}</td>
+      <td style="text-align: center">{{CommonUtil.convertBoolean(item.enabled)}}</td>
+    </tr>
+    <tr ng-if="NoStudioData()">
+      <td colspan="6" class="text-center">There is no studio</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div ng-show="loadingPage" style="position:absolute;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);margin-left:-16px;">
+  <md-progress-circular class="md-accent md-hue-1 file-loading-circle" md-mode="indeterminate" md-diameter="100" style="margin-left:45%;margin-top:80px;"></md-progress-circular>
+</div>

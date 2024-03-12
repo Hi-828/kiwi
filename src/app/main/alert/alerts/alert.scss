@@ -1,0 +1,26 @@
+#alert-page {
+
+  #widgets {
+
+    .ms-card {
+      padding: 12px;
+    }
+  }
+  div.thumb-cover {
+    width: 80px;
+    height: 80px;
+    margin:6px 0;
+    overflow: hidden;
+    display: inline-block;
+    text-align: center;
+
+    .thumb {
+      max-width: 80px;
+      max-height: 80px;
+    }
+  }
+
+  .md-select-value {
+    border:none;
+  }
+}

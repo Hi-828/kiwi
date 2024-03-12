@@ -1,0 +1,28 @@
+<div id="tileBlocks">
+  <div layout="row">
+    <div layout="column" flex="33" ng-repeat="tiles in tileList">
+      <div class="md-title">
+        <md-button class="md-raised md-primary" ng-click="addNewTile($event, tileList.indexOf(tiles) + 1)">Add New Tile</md-button>
+      </div>
+      <div class="column">
+        <ul class="cards card-list" data-as-sortable="dragControlListeners" data-ng-model="tiles">
+          <li class="card" ng-repeat="tile in tiles" as-sortable-item>
+            <div as-sortable-item-handle ng-dblclick="selectTile(tile)">
+              <div class="row" style="background: transparent">
+                <md-content style="padding:0;background: transparent" ng-include="'app/main/users/user/tabs/featured/templates/template-3/template-3.html'"  ng-if="tile.type=='product'">
+                </md-content>
+                <md-content style="padding:0;background: transparent" ng-include="'app/main/users/user/tabs/featured/templates/template-2/template-2.html'"  ng-if="tile.type=='image'">
+                </md-content>
+                <md-content style="padding:0;background: transparent" ng-include="'app/main/users/user/tabs/featured/templates/template-1/template-1.html'"  ng-if="tile.type=='text'">
+                </md-content>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div data-ng-show="isLoadingTilePage" layout="row" layout-sm="column" layout-align="space-around" class="file-loading">
+    <md-progress-circular class="md-accent md-hue-1" md-mode="indeterminate" md-diameter="96" style="margin-top:0">Saving...</md-progress-circular>
+  </div>
+</div>
